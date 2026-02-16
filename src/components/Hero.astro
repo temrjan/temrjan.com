@@ -1,5 +1,6 @@
 ---
 import GlowEffect from './GlowEffect.astro';
+import Tachometer from './Tachometer.astro';
 import HeroStats from './HeroStats.astro';
 import Icons from './Icons.astro';
 import type { Language } from '@/i18n/config';
@@ -10,7 +11,6 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const nameChars = t(lang, 'hero.name').split('');
 ---
 
 <section class="relative flex min-h-screen items-center justify-center overflow-hidden px-6" id="hero">
@@ -21,13 +21,11 @@ const nameChars = t(lang, 'hero.name').split('');
       {t(lang, 'hero.role')}
     </p>
 
-    <h1 class="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl" id="hero-name">
-      {nameChars.map((char) => (
-        <span class="hero-char inline-block" data-animate>{char}</span>
-      ))}
-    </h1>
+    <div class="mt-6 mb-6" id="hero-tachometer" data-animate>
+      <Tachometer />
+    </div>
 
-    <p data-animate class="mx-auto mt-4 max-w-lg text-base text-text-secondary md:text-lg" id="hero-tagline">
+    <p data-animate class="mx-auto max-w-lg text-base text-text-secondary md:text-lg" id="hero-tagline">
       {t(lang, 'hero.tagline')}
     </p>
 
