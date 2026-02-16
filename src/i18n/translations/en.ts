@@ -8,7 +8,7 @@ export const en = {
     contact: 'Contact',
   },
   hero: {
-    name: 'TEMURJAN',
+    name: 'TEMRJAN',
     role: 'Full-Stack Developer',
     tagline: 'I build products from idea to production',
     cta: {

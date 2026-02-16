@@ -10,7 +10,7 @@ export const ru: TranslationSchema = {
     contact: 'Контакт',
   },
   hero: {
-    name: 'TEMURJAN',
+    name: 'TEMRJAN',
     role: 'Full-Stack Разработчик',
     tagline: 'Создаю продукты от идеи до продакшена',
     cta: {

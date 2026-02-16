@@ -10,7 +10,7 @@ export const uz: TranslationSchema = {
     contact: 'Aloqa',
   },
   hero: {
-    name: 'TEMURJAN',
+    name: 'TEMRJAN',
     role: 'Full-Stack Dasturchi',
     tagline: "Men g'oyadan tayyor mahsulotgacha yarataman",
     cta: {

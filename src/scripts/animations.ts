@@ -40,7 +40,7 @@ function initAnimations(): void {
 
   // 3. Hero role + tagline — fade up
   gsap.fromTo(
-    '#hero-role, #hero-tagline',
+    '#hero-greeting, #hero-tagline',
     { y: 30, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power2.out', delay: 0.8 }
   );
