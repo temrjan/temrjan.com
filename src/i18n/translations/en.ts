@@ -1,6 +1,6 @@
 export const en = {
   meta: {
-    title: 'Temurjan — Full-Stack Developer',
+    title: 'Temrjan — Full-Stack Developer',
     description: 'I build products from idea to production. 7 products, 60K+ lines of code, 5 technology stacks.',
   },
   nav: {
@@ -33,7 +33,7 @@ export const en = {
     email: 'Send Email',
   },
   footer: {
-    copyright: '© 2026 Temurjan',
+    copyright: '© 2026 Temrjan',
     built: 'Built with Astro',
   },
 } as const;

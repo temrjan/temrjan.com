@@ -2,7 +2,7 @@ import type { TranslationSchema } from './en';
 
 export const uz: TranslationSchema = {
   meta: {
-    title: 'Temurjan — Full-Stack Dasturchi',
+    title: 'Temrjan — Full-Stack Dasturchi',
     description: "Men g'oyadan tayyor mahsulotgacha yarataman. 7 ta mahsulot, 60K+ qator kod, 5 ta texnologiya steki.",
   },
   nav: {
@@ -35,7 +35,7 @@ export const uz: TranslationSchema = {
     email: 'Email yuborish',
   },
   footer: {
-    copyright: '© 2026 Temurjan',
+    copyright: '© 2026 Temrjan',
     built: 'Astro bilan yaratilgan',
   },
 } as const;

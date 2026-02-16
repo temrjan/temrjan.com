@@ -2,7 +2,7 @@ import type { TranslationSchema } from './en';
 
 export const ru: TranslationSchema = {
   meta: {
-    title: 'Temurjan — Full-Stack Разработчик',
+    title: 'Temrjan — Full-Stack Разработчик',
     description: 'Создаю продукты от идеи до продакшена. 7 продуктов, 60K+ строк кода, 5 технологических стеков.',
   },
   nav: {
@@ -35,7 +35,7 @@ export const ru: TranslationSchema = {
     email: 'Отправить Email',
   },
   footer: {
-    copyright: '© 2026 Temurjan',
+    copyright: '© 2026 Temrjan',
     built: 'Создано на Astro',
   },
 } as const;
