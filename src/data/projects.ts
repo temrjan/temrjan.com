@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
     loc: '18K',
     image: '/projects/biotact.webp',
     span: 2,
-    url: 'https://biotact.com',
+    url: 'https://t.me/BiotactBot',
   },
   {
     id: 'znai-cloud',
@@ -37,6 +37,7 @@ export const PROJECTS: Project[] = [
     tech: ['Node.js', 'Express', 'Docker', 'Nginx', 'Ubuntu'],
     loc: '8K',
     image: '/projects/znai-cloud.webp',
+    url: 'https://znai.cloud',
   },
   {
     id: 'oltinchain',
@@ -49,6 +50,7 @@ export const PROJECTS: Project[] = [
     tech: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis'],
     loc: '12K',
     image: '/projects/oltinchain.webp',
+    url: 'https://oltinchain.com',
   },
   {
     id: 'sulum',
@@ -61,6 +63,7 @@ export const PROJECTS: Project[] = [
     tech: ['Telegram Bot', 'Python', 'FastAPI', 'PostgreSQL'],
     loc: '6K',
     image: '/projects/sulum.webp',
+    url: 'https://t.me/Sulum_bot',
   },
   {
     id: 'ai-prikorm',
@@ -73,6 +76,7 @@ export const PROJECTS: Project[] = [
     tech: ['Python', 'FastAPI', 'OpenAI', 'Telegram Bot', 'PostgreSQL'],
     loc: '4K',
     image: '/projects/ai-prikorm.webp',
+    url: 'https://t.me/aiprikormbot',
   },
   {
     id: 'dorify',
@@ -86,6 +90,7 @@ export const PROJECTS: Project[] = [
     loc: '15K',
     image: '/projects/dorify.webp',
     span: 2,
+    url: 'https://dorify.uz',
   },
   {
     id: 'shared-rag',
