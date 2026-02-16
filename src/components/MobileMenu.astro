@@ -1,0 +1,64 @@
+---
+import Icons from './Icons.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Language } from '@/i18n/config';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-[60] flex translate-x-full flex-col bg-body transition-transform duration-300 md:hidden"
+  aria-hidden="true"
+>
+  <div class="flex items-center justify-between px-6 py-4">
+    <a href={`/${lang}/`} class="font-heading text-xl font-bold tracking-tight text-text">
+      temrjan<span class="text-primary">.</span>
+    </a>
+    <button id="mobile-menu-close" aria-label="Close menu">
+      <Icons name="close" size={24} class="text-text" />
+    </button>
+  </div>
+
+  <nav class="flex flex-1 flex-col items-center justify-center gap-8">
+    <a href="#projects" class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
+      {t(lang, 'nav.projects')}
+    </a>
+    <a href="#contact" class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
+      {t(lang, 'nav.contact')}
+    </a>
+    <div class="mt-4">
+      <LanguageSwitcher lang={lang} />
+    </div>
+  </nav>
+</div>
+
+<script>
+  const menu = document.getElementById('mobile-menu');
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const close = document.getElementById('mobile-menu-close');
+  const links = document.querySelectorAll('.mobile-menu-link');
+
+  function openMenu(): void {
+    menu?.classList.remove('translate-x-full');
+    menu?.setAttribute('aria-hidden', 'false');
+    toggle?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu(): void {
+    menu?.classList.add('translate-x-full');
+    menu?.setAttribute('aria-hidden', 'true');
+    toggle?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle?.addEventListener('click', openMenu);
+  close?.addEventListener('click', closeMenu);
+  links.forEach((link) => link.addEventListener('click', closeMenu));
+</script>

@@ -1,0 +1,27 @@
+---
+import type { Language } from '@/i18n/config';
+import { SUPPORTED_LANGS, LANGUAGE_LABELS } from '@/i18n/config';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<div class="flex items-center gap-1 rounded-lg border border-border bg-surface px-1 py-1">
+  {SUPPORTED_LANGS.map((l) => (
+    <a
+      href={`/${l}/`}
+      class:list={[
+        'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+        l === lang
+          ? 'bg-primary text-white'
+          : 'text-text-muted hover:text-text',
+      ]}
+      aria-current={l === lang ? 'page' : undefined}
+    >
+      {LANGUAGE_LABELS[l]}
+    </a>
+  ))}
+</div>

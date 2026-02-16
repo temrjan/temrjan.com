@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+  size?: string;
+}
+
+const { class: className = '', size = '400px' } = Astro.props;
+---
+
+<div
+  class:list={['pointer-events-none absolute rounded-full blur-[120px]', className]}
+  style={`width: ${size}; height: ${size}; background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);`}
+  aria-hidden="true"
+/>

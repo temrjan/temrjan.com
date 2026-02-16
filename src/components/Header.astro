@@ -1,0 +1,65 @@
+---
+import Icons from './Icons.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import MobileMenu from './MobileMenu.astro';
+import type { Language } from '@/i18n/config';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<header data-animate class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="header">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <a href={`/${lang}/`} class="font-heading text-xl font-bold tracking-tight text-text">
+      temrjan<span class="text-primary">.</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex">
+      <a href="#projects" class="text-sm text-text-secondary transition-colors hover:text-text">
+        {t(lang, 'nav.projects')}
+      </a>
+      <a href="#contact" class="text-sm text-text-secondary transition-colors hover:text-text">
+        {t(lang, 'nav.contact')}
+      </a>
+      <LanguageSwitcher lang={lang} />
+    </nav>
+
+    <button
+      class="flex items-center justify-center md:hidden"
+      id="mobile-menu-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      <Icons name="hamburger" size={24} class="text-text" />
+    </button>
+  </div>
+
+  <MobileMenu lang={lang} />
+</header>
+
+<script>
+  const header = document.getElementById('header');
+  let lastScrollY = 0;
+
+  function handleScroll(): void {
+    const currentScrollY = window.scrollY;
+    if (header) {
+      if (currentScrollY > 80) {
+        header.style.backgroundColor = 'rgba(12, 12, 14, 0.85)';
+        header.style.backdropFilter = 'blur(12px)';
+        header.style.borderBottom = '1px solid rgba(44, 44, 46, 0.5)';
+      } else {
+        header.style.backgroundColor = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.borderBottom = '1px solid transparent';
+      }
+    }
+    lastScrollY = currentScrollY;
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+</script>

@@ -1,0 +1,27 @@
+---
+import type { Language } from '@/i18n/config';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+
+const stats = [
+  { value: 7, suffix: '', label: t(lang, 'hero.stats.products') },
+  { value: 60, suffix: 'K+', label: t(lang, 'hero.stats.loc') },
+  { value: 5, suffix: '', label: t(lang, 'hero.stats.stacks') },
+];
+---
+
+<div data-animate class="mt-16 flex items-center justify-center gap-12 md:gap-16" id="hero-stats">
+  {stats.map((stat) => (
+    <div class="text-center">
+      <div class="font-mono text-3xl font-bold text-accent md:text-4xl">
+        <span class="stat-number" data-target={stat.value}>0</span>{stat.suffix}
+      </div>
+      <div class="mt-1 text-xs text-text-muted md:text-sm">{stat.label}</div>
+    </div>
+  ))}
+</div>

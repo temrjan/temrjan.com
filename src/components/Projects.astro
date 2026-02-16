@@ -1,0 +1,25 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ProjectCard from './ProjectCard.astro';
+import type { Language } from '@/i18n/config';
+import { PROJECTS } from '@/data/projects';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative px-6 py-24 md:py-32" id="projects">
+  <div class="mx-auto max-w-7xl">
+    <SectionHeading title={t(lang, 'projects.title')} subtitle={t(lang, 'projects.subtitle')} />
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {PROJECTS.map((project) => (
+        <ProjectCard project={project} lang={lang} />
+      ))}
+    </div>
+  </div>
+</section>

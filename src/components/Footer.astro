@@ -1,0 +1,49 @@
+---
+import Icons from './Icons.astro';
+import type { Language } from '@/i18n/config';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<footer class="border-t border-border px-6 py-8">
+  <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
+    <div class="flex items-center gap-4 text-sm text-text-muted">
+      <span>{t(lang, 'footer.copyright')}</span>
+      <span class="hidden md:inline">·</span>
+      <span class="hidden md:inline">{t(lang, 'footer.built')}</span>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="https://github.com/temurjan"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-text-muted transition-colors hover:text-text"
+        aria-label="GitHub"
+      >
+        <Icons name="github" size={20} />
+      </a>
+      <a
+        href="https://t.me/temurjan_dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-text-muted transition-colors hover:text-text"
+        aria-label="Telegram"
+      >
+        <Icons name="telegram" size={20} />
+      </a>
+      <a
+        href="mailto:hello@temrjan.com"
+        class="text-text-muted transition-colors hover:text-text"
+        aria-label="Email"
+      >
+        <Icons name="email" size={20} />
+      </a>
+    </div>
+  </div>
+</footer>
