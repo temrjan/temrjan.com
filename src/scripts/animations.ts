@@ -7,115 +7,144 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/* ===== ENGINE SOUND ===== */
+/* ===== HYBRID ENGINE SOUND (Real sample + Web Audio processing) ===== */
 class EngineSound {
   private ctx: AudioContext | null = null;
-  private oscillators: OscillatorNode[] = [];
+  private source: AudioBufferSourceNode | null = null;
+  private buffer: AudioBuffer | null = null;
   private masterGain: GainNode | null = null;
+  private lowpass: BiquadFilterNode | null = null;
+  private presence: BiquadFilterNode | null = null;
+  private exhaustRes: BiquadFilterNode | null = null;
   private noiseGain: GainNode | null = null;
   private noiseSource: AudioBufferSourceNode | null = null;
+  private noiseBandpass: BiquadFilterNode | null = null;
   private active = false;
+  private loaded = false;
+  private baseRpm = 3500;
 
-  start(): void {
-    if (this.active) return;
+  async load(): Promise<void> {
     try {
       this.ctx = new AudioContext();
-
-      // Master volume
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.value = 0;
-      this.masterGain.connect(this.ctx.destination);
-
-      // Distortion for grit
-      const distortion = this.ctx.createWaveShaper();
-      distortion.curve = this.makeDistortionCurve(80);
-      distortion.oversample = '4x';
-
-      // Low rumble
-      const osc1 = this.ctx.createOscillator();
-      osc1.type = 'sawtooth';
-      osc1.frequency.value = 55;
-      const g1 = this.ctx.createGain();
-      g1.gain.value = 0.35;
-      osc1.connect(g1).connect(distortion).connect(this.masterGain);
-      osc1.start();
-      this.oscillators.push(osc1);
-
-      // Mid harmonic
-      const osc2 = this.ctx.createOscillator();
-      osc2.type = 'square';
-      osc2.frequency.value = 110;
-      const g2 = this.ctx.createGain();
-      g2.gain.value = 0.15;
-      osc2.connect(g2).connect(distortion).connect(this.masterGain);
-      osc2.start();
-      this.oscillators.push(osc2);
-
-      // Sub bass
-      const osc3 = this.ctx.createOscillator();
-      osc3.type = 'triangle';
-      osc3.frequency.value = 30;
-      const g3 = this.ctx.createGain();
-      g3.gain.value = 0.25;
-      osc3.connect(g3).connect(this.masterGain);
-      osc3.start();
-      this.oscillators.push(osc3);
-
-      // High whine (turbo feel)
-      const osc4 = this.ctx.createOscillator();
-      osc4.type = 'sine';
-      osc4.frequency.value = 220;
-      const g4 = this.ctx.createGain();
-      g4.gain.value = 0.05;
-      osc4.connect(g4).connect(this.masterGain);
-      osc4.start();
-      this.oscillators.push(osc4);
-
-      // Exhaust noise
-      const bufferSize = this.ctx.sampleRate * 2;
-      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1);
-      }
-      this.noiseSource = this.ctx.createBufferSource();
-      this.noiseSource.buffer = buffer;
-      this.noiseSource.loop = true;
-
-      const lpFilter = this.ctx.createBiquadFilter();
-      lpFilter.type = 'lowpass';
-      lpFilter.frequency.value = 400;
-      lpFilter.Q.value = 1;
-
-      this.noiseGain = this.ctx.createGain();
-      this.noiseGain.gain.value = 0.06;
-      this.noiseSource.connect(lpFilter).connect(this.noiseGain).connect(this.masterGain);
-      this.noiseSource.start();
-
-      this.active = true;
+      const response = await fetch('/sounds/engine-loop.mp3');
+      const arrayBuffer = await response.arrayBuffer();
+      this.buffer = await this.ctx.decodeAudioData(arrayBuffer);
+      this.loaded = true;
     } catch {
-      // Silent fallback
+      // Audio not available
     }
   }
 
+  start(): void {
+    if (this.active || !this.loaded || !this.ctx || !this.buffer) return;
+
+    // Resume context (autoplay policy)
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+
+    // Master volume
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = 0;
+    this.masterGain.connect(this.ctx.destination);
+
+    // Distortion for aggression
+    const distortion = this.ctx.createWaveShaper();
+    distortion.curve = this.makeDistortionCurve(150);
+    distortion.oversample = '2x';
+    distortion.connect(this.masterGain);
+
+    // High-shelf presence (opens up at high RPM)
+    this.presence = this.ctx.createBiquadFilter();
+    this.presence.type = 'highshelf';
+    this.presence.frequency.value = 2000;
+    this.presence.gain.value = 0;
+    this.presence.connect(distortion);
+
+    // Exhaust resonance (fixed formant)
+    this.exhaustRes = this.ctx.createBiquadFilter();
+    this.exhaustRes.type = 'peaking';
+    this.exhaustRes.frequency.value = 200;
+    this.exhaustRes.Q.value = 2;
+    this.exhaustRes.gain.value = 6;
+    this.exhaustRes.connect(this.presence);
+
+    // Low-pass (muffled at low RPM, opens at high)
+    this.lowpass = this.ctx.createBiquadFilter();
+    this.lowpass.type = 'lowpass';
+    this.lowpass.frequency.value = 1500;
+    this.lowpass.Q.value = 0.7;
+    this.lowpass.connect(this.exhaustRes);
+
+    // Sample source (looped)
+    this.source = this.ctx.createBufferSource();
+    this.source.buffer = this.buffer;
+    this.source.loop = true;
+    this.source.connect(this.lowpass);
+    this.source.start();
+
+    // Combustion noise texture
+    const noiseBuffer = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    this.noiseSource = this.ctx.createBufferSource();
+    this.noiseSource.buffer = noiseBuffer;
+    this.noiseSource.loop = true;
+
+    this.noiseBandpass = this.ctx.createBiquadFilter();
+    this.noiseBandpass.type = 'bandpass';
+    this.noiseBandpass.frequency.value = 400;
+    this.noiseBandpass.Q.value = 1.0;
+
+    this.noiseGain = this.ctx.createGain();
+    this.noiseGain.gain.value = 0.005;
+
+    this.noiseSource.connect(this.noiseBandpass);
+    this.noiseBandpass.connect(this.noiseGain);
+    this.noiseGain.connect(this.masterGain);
+    this.noiseSource.start();
+
+    this.active = true;
+  }
+
   update(rpm: number): void {
-    if (!this.active || !this.ctx || !this.masterGain) return;
+    if (!this.active || !this.ctx || !this.masterGain || !this.source) return;
     const t = this.ctx.currentTime;
+    const ramp = 0.06;
+    const norm = Math.max(0, Math.min(1, rpm / 9));
+
+    // Playback rate — pitch shifts the sample
+    const rate = Math.max(0.4, Math.min(2.2, (rpm * 1000) / (this.baseRpm)));
+    this.source.playbackRate.linearRampToValueAtTime(rate, t + ramp);
 
     // Volume ramps with RPM
-    const vol = Math.min(0.25, (rpm / 9) * 0.25);
-    this.masterGain.gain.setTargetAtTime(vol, t, 0.03);
+    const vol = 0.15 + norm * 0.55;
+    this.masterGain.gain.linearRampToValueAtTime(vol, t + ramp);
 
-    // Pitch scales with RPM
-    const base = 35 + (rpm / 9) * 180;
-    if (this.oscillators[0]) this.oscillators[0].frequency.setTargetAtTime(base, t, 0.03);
-    if (this.oscillators[1]) this.oscillators[1].frequency.setTargetAtTime(base * 2.02, t, 0.03);
-    if (this.oscillators[2]) this.oscillators[2].frequency.setTargetAtTime(base * 0.5, t, 0.03);
-    if (this.oscillators[3]) this.oscillators[3].frequency.setTargetAtTime(base * 4, t, 0.05);
+    // Low-pass opens with RPM
+    if (this.lowpass) {
+      const lpFreq = 1200 + norm * 7000;
+      this.lowpass.frequency.linearRampToValueAtTime(lpFreq, t + ramp);
+    }
+
+    // Presence increases with RPM
+    if (this.presence) {
+      this.presence.gain.linearRampToValueAtTime(norm * 12, t + ramp);
+    }
+
+    // Exhaust resonance shifts slightly
+    if (this.exhaustRes) {
+      this.exhaustRes.frequency.linearRampToValueAtTime(150 + norm * 100, t + ramp);
+    }
 
     // Noise louder at high RPM
     if (this.noiseGain) {
-      this.noiseGain.gain.setTargetAtTime(0.03 + (rpm / 9) * 0.12, t, 0.03);
+      this.noiseGain.gain.linearRampToValueAtTime(0.003 + norm * 0.04, t + ramp);
+    }
+    if (this.noiseBandpass) {
+      this.noiseBandpass.frequency.linearRampToValueAtTime(300 + norm * 600, t + ramp);
     }
   }
 
@@ -132,9 +161,8 @@ class EngineSound {
 
   stop(): void {
     if (!this.active) return;
-    this.oscillators.forEach((o) => { try { o.stop(); } catch {} });
+    try { this.source?.stop(); } catch {}
     try { this.noiseSource?.stop(); } catch {}
-    try { this.ctx?.close(); } catch {}
     this.active = false;
   }
 }
@@ -143,7 +171,7 @@ class EngineSound {
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const CX = 200, CY = 200, R = 155;
 const START = 135, END = 405, SWEEP = 270, MAX = 9, RED_START = 7;
-const START_ROT = START + 90; // 225
+const START_ROT = START + 90;
 
 function pt(r: number, angle: number): { x: number; y: number } {
   const rad = (angle * Math.PI) / 180;
@@ -166,7 +194,6 @@ function buildTachometer(): void {
   const outerArcGroup = document.getElementById('outerArc');
   if (!tickGroup || !labelGroup || !redZoneGroup || !outerArcGroup) return;
 
-  // Outer arc
   const track = document.createElementNS(SVG_NS, 'path');
   track.setAttribute('d', arc(R + 8, START, END));
   track.setAttribute('fill', 'none');
@@ -175,7 +202,6 @@ function buildTachometer(): void {
   track.setAttribute('stroke-linecap', 'round');
   outerArcGroup.appendChild(track);
 
-  // Red zone
   const redStart = START + (RED_START / MAX) * SWEEP;
   [['3', '0.7', ''], ['8', '0.15', 'url(#redGlow)']].forEach(([w, o, f]) => {
     const p = document.createElementNS(SVG_NS, 'path');
@@ -189,7 +215,6 @@ function buildTachometer(): void {
     redZoneGroup.appendChild(p);
   });
 
-  // Ticks
   const MINOR = 4;
   const total = MAX * (MINOR + 1) + 1;
   for (let i = 0; i < total; i++) {
@@ -212,7 +237,6 @@ function buildTachometer(): void {
     tickGroup.appendChild(tick);
   }
 
-  // Labels
   for (let i = 0; i <= MAX; i++) {
     const angle = START + (i / MAX) * SWEEP;
     const pos = pt(125, angle);
@@ -240,43 +264,33 @@ function initInteractiveTacho(engine: EngineSound): void {
   const container = document.querySelector('.tachometer-container') as HTMLElement | null;
   if (!needle || !rpmText || !svgEl || !container) return;
 
-  let currentRpm = 0;
-  let targetRpm = 0;
+  let currentRpm = 0.8;
+  let targetRpm = 0.8;
   let isRevving = false;
-  let animFrame = 0;
   let soundStarted = false;
 
   function updateDisplay(): void {
-    // Smooth interpolation
     const speed = isRevving ? 0.04 : 0.025;
     currentRpm += (targetRpm - currentRpm) * speed;
-
-    // Clamp
     if (Math.abs(currentRpm - targetRpm) < 0.01) currentRpm = targetRpm;
 
-    // Needle
     gsap.set(needle, { rotation: rpmToRot(currentRpm), svgOrigin: `${CX} ${CY}` });
-
-    // RPM text
     rpmText.textContent = Math.round(currentRpm * 1000).toLocaleString();
 
-    // Red zone glow
     if (currentRpm >= RED_START) {
       svgEl.classList.add('redzone-active');
     } else {
       svgEl.classList.remove('redzone-active');
     }
 
-    // Engine sound
     engine.update(currentRpm);
 
-    // Idle vibration
     if (!isRevving && currentRpm < 1.2 && currentRpm > 0.5) {
       const jitter = (Math.random() - 0.5) * 0.15;
       gsap.set(needle, { rotation: rpmToRot(currentRpm + jitter), svgOrigin: `${CX} ${CY}` });
     }
 
-    animFrame = requestAnimationFrame(updateDisplay);
+    requestAnimationFrame(updateDisplay);
   }
 
   function startRev(): void {
@@ -285,33 +299,25 @@ function initInteractiveTacho(engine: EngineSound): void {
       soundStarted = true;
     }
     isRevving = true;
-    targetRpm = 8.5; // Rev to near redline
+    targetRpm = 8.5;
   }
 
   function stopRev(): void {
     isRevving = false;
-    targetRpm = 0.8; // Back to idle
+    targetRpm = 0.8;
   }
 
-  // Cursor hint
   container.style.cursor = 'pointer';
-  container.title = 'Hold to rev!';
 
-  // Mouse events
   container.addEventListener('mousedown', (e) => { e.preventDefault(); startRev(); });
   document.addEventListener('mouseup', stopRev);
-
-  // Touch events
   container.addEventListener('touchstart', (e) => { e.preventDefault(); startRev(); }, { passive: false });
   document.addEventListener('touchend', stopRev);
   document.addEventListener('touchcancel', stopRev);
 
-  // Set to idle and start loop
-  currentRpm = 0.8;
-  targetRpm = 0.8;
   gsap.set(needle, { rotation: rpmToRot(0.8), svgOrigin: `${CX} ${CY}` });
   rpmText.textContent = '800';
-  animFrame = requestAnimationFrame(updateDisplay);
+  requestAnimationFrame(updateDisplay);
 }
 
 /* ===== STARTUP ANIMATION ===== */
@@ -337,27 +343,21 @@ function playStartupThenInteractive(engine: EngineSound): void {
       }
     },
     onComplete() {
-      // After startup animation -> switch to interactive mode
       initInteractiveTacho(engine);
     },
   });
 
-  // Ticks fade in
   tl.to(ticks, { opacity: 1, duration: 0.04, stagger: 0.02, ease: 'power1.in' });
   tl.to(labels, { opacity: 1, duration: 0.1, stagger: 0.05, ease: 'power1.in' }, '-=0.3');
-
-  // Startup sweep
   tl.to(needle, { rotation: rpmToRot(MAX), svgOrigin: `${CX} ${CY}`, duration: 1.4, ease: 'power2.in' }, '+=0.2');
   tl.to(rpmTracker, { value: MAX, duration: 1.4, ease: 'power2.in' }, '<');
   if (needleShadow) tl.to(needleShadow, { opacity: 0.4, duration: 0.3 }, '<');
-
-  // Drop to idle
   tl.to(needle, { rotation: rpmToRot(0.8), svgOrigin: `${CX} ${CY}`, duration: 1.2, ease: 'power3.out' });
   tl.to(rpmTracker, { value: 0.8, duration: 1.2, ease: 'power3.out' }, '<');
 }
 
 /* ===== MAIN ===== */
-function initAnimations(): void {
+async function initAnimations(): Promise<void> {
   if (prefersReducedMotion()) {
     document.querySelectorAll('[data-animate]').forEach((el) => {
       (el as HTMLElement).style.opacity = '1';
@@ -370,33 +370,36 @@ function initAnimations(): void {
   }
 
   buildTachometer();
-  const engine = new EngineSound();
 
-  // 1. Header
+  // Load engine sound (async, non-blocking)
+  const engine = new EngineSound();
+  engine.load();
+
+  // Header
   gsap.fromTo('#header', { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
 
-  // 2. Greeting
+  // Greeting
   gsap.fromTo('#hero-greeting', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
 
-  // 3. Tachometer appear + startup animation
+  // Tachometer
   gsap.fromTo('#hero-tachometer', { opacity: 0, scale: 0.9 }, {
     opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out', delay: 0.5,
     onComplete: () => playStartupThenInteractive(engine),
   });
 
-  // 4. Tagline
+  // Tagline
   gsap.fromTo('#hero-tagline', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.8 });
 
-  // 5. CTA
+  // CTA
   gsap.fromTo('#hero-cta', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 1.2 });
 
-  // 6. Stats
+  // Stats
   gsap.fromTo('#hero-stats', { y: 20, opacity: 0 }, {
     y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 1.5,
     onComplete: animateCounters,
   });
 
-  // 7. Section headings
+  // Section headings
   gsap.utils.toArray<HTMLElement>('#projects [data-animate]:first-child, #contact [data-animate]').forEach((el) => {
     gsap.fromTo(el, { y: 40, opacity: 0 }, {
       y: 0, opacity: 1, duration: 0.8, ease: 'power2.out',
@@ -404,7 +407,7 @@ function initAnimations(): void {
     });
   });
 
-  // 8. Project cards
+  // Project cards
   gsap.utils.toArray<HTMLElement>('.project-card').forEach((card, i) => {
     gsap.fromTo(card, { y: 60, opacity: 0, scale: 0.95 }, {
       y: 0, opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out',
@@ -413,7 +416,7 @@ function initAnimations(): void {
     });
   });
 
-  // 9. Tech badges
+  // Tech badges
   gsap.utils.toArray<HTMLElement>('.project-card').forEach((card) => {
     gsap.fromTo(card.querySelectorAll('.tech-badge'), { x: -20, opacity: 0 }, {
       x: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out',
@@ -421,7 +424,7 @@ function initAnimations(): void {
     });
   });
 
-  // 10. Scroll indicator
+  // Scroll indicator
   gsap.to('#scroll-indicator', { y: 10, duration: 1.2, ease: 'power1.inOut', yoyo: true, repeat: -1, delay: 2 });
   gsap.set('#scroll-indicator', { opacity: 1 });
 }
@@ -438,7 +441,7 @@ function animateCounters(): void {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAnimations);
+  document.addEventListener('DOMContentLoaded', () => { initAnimations(); });
 } else {
   initAnimations();
 }
