@@ -5,8 +5,6 @@ echo "=== Building temrjan.com ==="
 cd ~/server/temrjan.com
 npm run build
 
-echo "=== Deploying to znai-cloud ==="
-rsync -avz --delete dist/ znai-cloud:/var/www/temrjan/
-
 echo "=== Done! ==="
+echo "Caddy serves from /root/server/temrjan.com/dist/"
 echo "Visit: https://temrjan.com"
