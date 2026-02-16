@@ -11,13 +11,17 @@ interface Props {
 }
 
 const { project, lang } = Astro.props;
+const Tag = project.url ? 'a' : 'div';
+const linkProps = project.url ? { href: project.url, target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
-<article
+<Tag
+  {...linkProps}
   data-animate
   class:list={[
-    'project-card group relative overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5',
+    'project-card group relative block overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5',
     project.span === 2 ? 'md:col-span-2' : '',
+    project.url ? 'cursor-pointer' : '',
   ]}
 >
   <!-- Project image -->
@@ -30,15 +34,9 @@ const { project, lang } = Astro.props;
       <span class="font-heading text-2xl font-bold text-text-muted/30">{project.title}</span>
     </div>
     {project.url && (
-      <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-body/60 text-text-muted opacity-0 backdrop-blur-sm transition-all group-hover:opacity-100 hover:text-text"
-        aria-label={`Visit ${project.title}`}
-      >
+      <div class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-body/60 text-text-muted backdrop-blur-sm transition-all group-hover:text-text">
         <Icons name="external-link" size={16} />
-      </a>
+      </div>
     )}
   </div>
 
@@ -61,4 +59,4 @@ const { project, lang } = Astro.props;
       ))}
     </div>
   </div>
-</article>
+</Tag>
