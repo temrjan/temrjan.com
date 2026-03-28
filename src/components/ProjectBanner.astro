@@ -1,0 +1,165 @@
+---
+interface Props {
+  gradient: string;
+  id: string;
+}
+
+const { gradient, id } = Astro.props;
+---
+
+<div
+  class="project-banner relative w-full overflow-hidden rounded-2xl"
+  style={`background: ${gradient}; aspect-ratio: 21/9;`}
+>
+  <div class={`banner-decor banner-decor--${id}`} />
+</div>
+
+<style>
+  .banner-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* OltinPay — order book lines + coin circles */
+  .banner-decor--oltinpay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 18px,
+      rgba(245, 197, 24, 0.08) 18px,
+      rgba(245, 197, 24, 0.08) 19px
+    );
+    opacity: 0.6;
+  }
+  .banner-decor--oltinpay::after {
+    content: '';
+    position: absolute;
+    right: 12%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid rgba(245, 197, 24, 0.2);
+    box-shadow:
+      -50px 30px 0 -1px rgba(245, 197, 24, 0.12),
+      -50px 30px 0 0 transparent,
+      30px -40px 0 -1px rgba(245, 197, 24, 0.08),
+      30px -40px 0 0 transparent;
+  }
+  @media (min-width: 768px) {
+    .banner-decor--oltinpay::after {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  /* Znai.cloud — dot grid + corner flash */
+  .banner-decor--znai-cloud::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      rgba(30, 58, 95, 0.35) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+    opacity: 0.7;
+  }
+  .banner-decor--znai-cloud::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(30, 58, 95, 0.4) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+  }
+
+  /* AskBiotact — chat bubbles + dashed lines */
+  .banner-decor--askbiotact::before {
+    content: '';
+    position: absolute;
+    right: 15%;
+    top: 20%;
+    width: 100px;
+    height: 60px;
+    border: 1.5px solid rgba(22, 33, 62, 0.5);
+    border-radius: 20px 20px 20px 4px;
+    opacity: 0.6;
+  }
+  .banner-decor--askbiotact::after {
+    content: '';
+    position: absolute;
+    right: 28%;
+    top: 45%;
+    width: 70px;
+    height: 45px;
+    border: 1.5px solid rgba(22, 33, 62, 0.4);
+    border-radius: 20px 20px 4px 20px;
+    opacity: 0.5;
+  }
+
+  /* Biotact — pill capsule + wave */
+  .banner-decor--biotact::before {
+    content: '';
+    position: absolute;
+    right: 12%;
+    top: 25%;
+    width: 120px;
+    height: 50px;
+    border: 2px solid rgba(227, 30, 36, 0.2);
+    border-radius: 25px;
+    transform: rotate(-15deg);
+  }
+  .banner-decor--biotact::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 C200,120 400,0 600,60 C800,120 1000,0 1200,60 L1200,120 L0,120 Z' fill='rgba(227,30,36,0.06)'/%3E%3C/svg%3E")
+      no-repeat bottom center;
+    background-size: 100% auto;
+    opacity: 0.8;
+  }
+
+  /* Biotact Mail — envelope + lock */
+  .banner-decor--biotact-mail::before {
+    content: '';
+    position: absolute;
+    right: 14%;
+    top: 22%;
+    width: 100px;
+    height: 70px;
+    border: 1.5px solid rgba(55, 65, 81, 0.4);
+    border-radius: 4px;
+    background: linear-gradient(
+      to bottom right,
+      transparent 49%,
+      rgba(55, 65, 81, 0.15) 50%,
+      transparent 51%
+    );
+  }
+  .banner-decor--biotact-mail::after {
+    content: '';
+    position: absolute;
+    right: 10%;
+    top: 18%;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid rgba(55, 65, 81, 0.35);
+    border-radius: 4px 4px 6px 6px;
+    box-shadow: 0 -8px 0 -3px rgba(55, 65, 81, 0.25);
+  }
+</style>

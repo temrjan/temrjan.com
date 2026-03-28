@@ -389,6 +389,8 @@ async function initAnimations(): Promise<void> {
 
   // Tagline
   gsap.fromTo('#hero-tagline', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.8 });
+ // Specialty pills
+  gsap.fromTo("#hero-specialties", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out", delay: 1.0 });
 
   // CTA
   gsap.fromTo('#hero-cta', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 1.2 });

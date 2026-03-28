@@ -11,6 +11,12 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+
+const specialties: Record<Language, string[]> = {
+  en: ['AI & RAG', 'Telegram Apps', 'Platforms', 'Infrastructure'],
+  ru: ['AI & RAG', 'Telegram Apps', 'Платформы', 'Инфраструктура'],
+  uz: ['AI & RAG', 'Telegram Apps', 'Platformalar', 'Infratuzilma'],
+};
 ---
 
 <section class="relative flex min-h-screen items-center justify-center overflow-hidden px-6" id="hero">
@@ -25,9 +31,17 @@ const { lang } = Astro.props;
       <Tachometer />
     </div>
 
-    <p data-animate class="mx-auto max-w-lg text-base text-text-secondary md:text-lg" id="hero-tagline">
+    <p data-animate class="mx-auto max-w-lg text-base text-text-secondary md:text-lg whitespace-pre-line" id="hero-tagline">
       {t(lang, 'hero.tagline')}
     </p>
+
+    <div data-animate class="mt-6 flex flex-wrap items-center justify-center gap-2" id="hero-specialties">
+      {specialties[lang].map((s) => (
+        <span class="rounded-xl border border-border bg-surface px-4 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:border-primary/40 hover:text-text">
+          {s}
+        </span>
+      ))}
+    </div>
 
     <div data-animate class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row" id="hero-cta">
       <a

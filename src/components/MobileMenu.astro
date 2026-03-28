@@ -6,9 +6,13 @@ import { t } from '@/i18n/utils';
 
 interface Props {
   lang: Language;
+  isHomePage?: boolean;
 }
 
-const { lang } = Astro.props;
+const { lang, isHomePage = true } = Astro.props;
+
+const projectsUrl = isHomePage ? '#projects' : `/${lang}/#projects`;
+const contactUrl = isHomePage ? '#contact' : `/${lang}/#contact`;
 ---
 
 <div
@@ -17,8 +21,13 @@ const { lang } = Astro.props;
   aria-hidden="true"
 >
   <div class="flex items-center justify-between px-6 py-4">
-    <a href={`/${lang}/`} class="font-heading text-xl font-bold tracking-tight text-text">
-      temrjan<span class="text-primary">.</span>
+    <a href={`/${lang}/`} class="group flex items-center transition-transform hover:scale-[1.02]" aria-label="Home">
+      <svg class="h-6 md:h-7 text-text transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(227,30,36,0.2)]" viewBox="0 0 160 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <g style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.04em;">
+          <text x="0" y="24">temrjan</text>
+          <circle cx="112" cy="24" r="4" class="fill-primary" />
+        </g>
+      </svg>
     </a>
     <button id="mobile-menu-close" aria-label="Close menu">
       <Icons name="close" size={24} class="text-text" />
@@ -26,10 +35,13 @@ const { lang } = Astro.props;
   </div>
 
   <nav class="flex flex-1 flex-col items-center justify-center gap-8">
-    <a href="#projects" class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
+    <a href={projectsUrl} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
       {t(lang, 'nav.projects')}
     </a>
-    <a href="#contact" class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
+    <a href={`/${lang}/approach`} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
+      {t(lang, 'nav.approach')}
+    </a>
+    <a href={contactUrl} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
       {t(lang, 'nav.contact')}
     </a>
     <div class="mt-4">

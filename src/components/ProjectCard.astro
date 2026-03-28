@@ -8,55 +8,147 @@ import { t } from '@/i18n/utils';
 interface Props {
   project: Project;
   lang: Language;
+  index: number;
 }
 
-const { project, lang } = Astro.props;
-const Tag = project.url ? 'a' : 'div';
-const linkProps = project.url ? { href: project.url, target: '_blank', rel: 'noopener noreferrer' } : {};
+const { project, lang, index } = Astro.props;
+
+const detailUrl = `/${lang}/projects/${project.id}`;
+const formattedIndex = String(index + 1).padStart(2, '0');
+
+// SVG декорации для каждого проекта
+const svgDecorMap: Record<string, string> = {
+  'oltinpay': `
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <path d="M10 80 L30 50 L50 60 L90 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="20" r="3" fill="currentColor"/>
+      <circle cx="70" cy="80" r="10" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <circle cx="85" cy="65" r="6" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M70 75 V85 M65 80 H75" stroke="currentColor" stroke-width="1"/>
+    </svg>
+  `,
+  'znai-cloud': `
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <circle cx="50" cy="50" r="4" fill="currentColor"/>
+      <circle cx="20" cy="30" r="3" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="80" cy="40" r="3" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="30" cy="70" r="3" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="70" cy="80" r="3" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M23 32 L46 48 M54 52 L68 78 M54 48 L77 42 M32 68 L46 52" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+      <rect x="15" y="70" width="16" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M19 75 H27 M19 80 H25" stroke="currentColor" stroke-width="1"/>
+    </svg>
+  `,
+  'askbiotact': `
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <path d="M20 40 C20 25 35 20 50 20 C65 20 80 25 80 40 C80 55 65 60 50 60 C45 60 35 65 25 70 C28 63 25 58 20 55 C15 50 20 45 20 40 Z" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="35" cy="40" r="2" fill="currentColor" class="animate-pulse"/>
+      <circle cx="50" cy="40" r="2" fill="currentColor" class="animate-pulse" style="animation-delay: 0.2s"/>
+      <circle cx="65" cy="40" r="2" fill="currentColor" class="animate-pulse" style="animation-delay: 0.4s"/>
+    </svg>
+  `,
+  'biotact': `
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <rect x="35" y="15" width="30" height="60" rx="4" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M45 15 H55" stroke="currentColor" stroke-width="2"/>
+      <rect x="40" y="25" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1"/>
+      <path d="M40 55 H60 M40 62 H50" stroke="currentColor" stroke-width="1"/>
+      <path d="M70 75 L75 85 H90 L85 65 H75 L70 55" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="78" cy="90" r="2" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="86" cy="90" r="2" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  `,
+  'biotact-mail': `
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <rect x="20" y="30" width="60" height="40" rx="3" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M20 35 L50 55 L80 35" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M45 70 V85 C45 90 55 90 55 85 V70" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="42" y="60" width="16" height="12" rx="2" fill="currentColor"/>
+    </svg>
+  `
+};
+
+// Первый цвет из градиента
+const svgColorsMap: Record<string, string> = {
+  'oltinpay': '#F5C518',
+  'znai-cloud': '#1e3a5f',
+  'askbiotact': '#1a1a2e',
+  'biotact': '#E31E24',
+  'biotact-mail': '#374151'
+};
+
+const svgColor = svgColorsMap[project.id] || 'var(--color-text-secondary)';
+const svgDecor = svgDecorMap[project.id] || '';
 ---
-
-<Tag
-  {...linkProps}
-  data-animate
+<a 
+  href={detailUrl} 
   class:list={[
-    'project-card group relative block overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5',
-    project.span === 2 ? 'md:col-span-2' : '',
-    project.url ? 'cursor-pointer' : '',
+    "project-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-primary hover:shadow-[0_8px_30px_rgb(227,30,36,0.12)]",
+    project.span === 2 ? 'md:col-span-2' : ''
   ]}
+  data-animate
 >
-  <!-- Project image -->
-  <div class="relative aspect-video overflow-hidden bg-elevated">
-    <div
-      class="absolute inset-0"
-      style={`background: linear-gradient(135deg, var(--color-elevated) 0%, var(--color-surface) 50%, var(--color-primary-glow) 100%);`}
-    />
-    <div class="absolute inset-0 flex items-center justify-center">
-      <span class="font-heading text-2xl font-bold text-text-muted/30">{project.title}</span>
-    </div>
-    {project.url && (
-      <div class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-body/60 text-text-muted backdrop-blur-sm transition-all group-hover:text-text">
-        <Icons name="external-link" size={16} />
-      </div>
-    )}
-  </div>
+  <!-- Background Gradient Effect -->
+  <div 
+    class="absolute inset-0 opacity-10 transition-opacity duration-500 group-hover:opacity-20 pointer-events-none" 
+    style={`background: ${project.gradient};`}
+  ></div>
 
-  <!-- Content -->
-  <div class="p-5">
-    <div class="flex items-start justify-between gap-2">
-      <h3 class="font-heading text-lg font-semibold text-text">{project.title}</h3>
-      <span class="shrink-0 font-mono text-sm font-bold text-accent">
-        {project.loc} {t(lang, 'projects.loc')}
+  <!-- SVG Decor Backdrop -->
+  <div 
+    class="absolute right-0 top-0 w-48 h-48 -translate-y-8 translate-x-8 opacity-15 transition-all duration-500 group-hover:opacity-40 group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2 pointer-events-none"
+    style={`color: ${svgColor};`}
+    set:html={svgDecor}
+  />
+
+  <div class="relative z-10 flex flex-col h-full">
+    <!-- Header: Index + Category -->
+    <div class="flex items-center justify-between mb-8">
+      <span class="font-mono text-3xl font-bold text-text-muted opacity-50 group-hover:opacity-100 transition-opacity">
+        {formattedIndex}
+      </span>
+      <span class="font-mono text-[10px] tracking-widest uppercase text-text-muted">
+        {project.category[lang]}
       </span>
     </div>
 
-    <p class="mt-2 line-clamp-2 text-sm text-text-secondary">
+    <!-- Title & LOC -->
+    <div class="flex items-start justify-between mb-4 gap-4">
+      <h3 class="font-heading text-2xl md:text-3xl font-bold text-text group-hover:text-primary transition-colors flex items-center gap-2">
+        {project.title}
+        {project.url && (
+          <div
+            class="flex items-center justify-center opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-text-muted group-hover:text-primary"
+            onclick="event.preventDefault(); window.open(this.parentElement.dataset.url, '_blank')"
+            data-url={project.url}
+          >
+            <Icons name="external-link" size={24} />
+          </div>
+        )}
+      </h3>
+      <div class="flex flex-col items-end shrink-0">
+        <span class="font-mono text-sm font-bold text-accent bg-elevated px-2 py-1 rounded">
+          {project.loc} {t(lang, 'projects.loc')}
+        </span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <p class="font-body text-text-secondary line-clamp-2 mb-8 flex-grow leading-relaxed">
       {project.descriptions[lang]}
     </p>
 
-    <div class="mt-4 flex flex-wrap gap-2">
-      {project.tech.map((techName) => (
-        <TechBadge name={techName} />
-      ))}
+    <!-- Footer: Tech Badges & Link -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-auto pt-6 border-t border-border/50">
+      <div class="flex flex-wrap gap-2">
+        {project.tech.map((techName) => (
+          <TechBadge name={techName} />
+        ))}
+      </div>
+      
+      <span class="inline-flex items-center gap-2 font-mono text-sm text-text-secondary group-hover:text-primary transition-colors whitespace-nowrap">
+        {t(lang, 'projects.details')} <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+      </span>
     </div>
   </div>
-</Tag>
+</a>

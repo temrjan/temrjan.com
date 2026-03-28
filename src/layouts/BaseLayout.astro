@@ -46,8 +46,12 @@ const SUPPORTED_LANGS = ['en', 'uz', 'ru'];
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${Astro.site}og-image.jpg`} />
 
+    <!-- Google Fonts: Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
     <!-- Preload critical fonts -->
-    <link rel="preload" href="/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured Data -->
@@ -59,7 +63,7 @@ const SUPPORTED_LANGS = ['en', 'uz', 'ru'];
       "jobTitle": "Full-Stack Developer",
       "sameAs": [
         "https://github.com/temrjan",
-        "https://t.me/telegram"
+        "https://t.me/temrjan"
       ]
     })} />
   </head>

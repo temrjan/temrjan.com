@@ -10,19 +10,39 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+
+// Determine if we are on a project detail page (or any internal page)
+const isHomePage = Astro.url.pathname === `/${lang}` || Astro.url.pathname === `/${lang}/`;
+
+// Make links absolute to the home page so they work from project detail pages
+const projectsUrl = isHomePage ? '#projects' : `/${lang}/#projects`;
+const contactUrl = isHomePage ? '#contact' : `/${lang}/#contact`;
+
+// For project detail pages, let's give the header a solid background by default
+// so the logo doesn't clash with the ambient glow behind it.
+const defaultHeaderClass = isHomePage ? 'bg-transparent' : 'bg-body/80 backdrop-blur-md border-b border-border/50';
 ---
 
-<header data-animate class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="header">
+<header  class={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${defaultHeaderClass}`} id="header">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-    <a href={`/${lang}/`} class="font-heading text-xl font-bold tracking-tight text-text">
-      temrjan<span class="text-primary">.</span>
+    <a href={`/${lang}/`} class="group flex items-center transition-transform hover:scale-[1.02]" aria-label="Home">
+      <!-- Full text logo SVG in Space Grotesk Style -->
+      <svg class="h-6 md:h-7 text-text transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(227,30,36,0.2)]" viewBox="0 0 160 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <g style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.04em;">
+          <text x="0" y="24">temrjan</text>
+          <circle cx="112" cy="24" r="4" class="fill-primary transition-transform duration-300 group-hover:scale-125" style="transform-origin: 112px 24px;" />
+        </g>
+      </svg>
     </a>
 
     <nav class="hidden items-center gap-8 md:flex">
-      <a href="#projects" class="text-sm text-text-secondary transition-colors hover:text-text">
+      <a href={projectsUrl} class="text-sm font-medium text-text-secondary transition-colors hover:text-text">
         {t(lang, 'nav.projects')}
       </a>
-      <a href="#contact" class="text-sm text-text-secondary transition-colors hover:text-text">
+      <a href={`/${lang}/approach`} class="text-sm font-medium text-text-secondary transition-colors hover:text-text">
+        {t(lang, 'nav.approach')}
+      </a>
+      <a href={contactUrl} class="text-sm font-medium text-text-secondary transition-colors hover:text-text">
         {t(lang, 'nav.contact')}
       </a>
       <LanguageSwitcher lang={lang} />
@@ -38,7 +58,7 @@ const { lang } = Astro.props;
     </button>
   </div>
 
-  <MobileMenu lang={lang} />
+  <MobileMenu lang={lang} isHomePage={isHomePage} />
 </header>
 
 <script>
@@ -53,9 +73,12 @@ const { lang } = Astro.props;
         header.style.backdropFilter = 'blur(12px)';
         header.style.borderBottom = '1px solid rgba(44, 44, 46, 0.5)';
       } else {
-        header.style.backgroundColor = 'transparent';
-        header.style.backdropFilter = 'none';
-        header.style.borderBottom = '1px solid transparent';
+        // Only reset if we don't have the default non-home background class
+        if (!header.classList.contains('bg-body/80')) {
+          header.style.backgroundColor = 'transparent';
+          header.style.backdropFilter = 'none';
+          header.style.borderBottom = '1px solid transparent';
+        }
       }
     }
     lastScrollY = currentScrollY;

@@ -16,9 +16,9 @@ const { lang } = Astro.props;
   <div class="mx-auto max-w-7xl">
     <SectionHeading title={t(lang, 'projects.title')} subtitle={t(lang, 'projects.subtitle')} />
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-      {PROJECTS.map((project) => (
-        <ProjectCard project={project} lang={lang} />
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3 mt-12">
+      {PROJECTS.map((project, index) => (
+        <ProjectCard project={project} lang={lang} index={index} />
       ))}
     </div>
   </div>
