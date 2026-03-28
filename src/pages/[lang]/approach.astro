@@ -135,17 +135,36 @@ const analogy = t(lang, 'approach.analogy');
   <Footer lang={lang} />
 
   <script>
-    // Pipeline animation on scroll
-    const observer = new IntersectionObserver((entries) => {
+    // Make all data-animate elements visible with fade-in
+    const animateEls = document.querySelectorAll('[data-animate]');
+    const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Animate progress line
+          const el = entry.target as HTMLElement;
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+          fadeObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    animateEls.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      htmlEl.style.opacity = '0';
+      htmlEl.style.transform = 'translateY(20px)';
+      fadeObserver.observe(el);
+    });
+
+    // Pipeline progress animation
+    const pipelineObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
           const progress = document.getElementById('pipeline-progress');
           const progressMobile = document.getElementById('pipeline-progress-mobile');
           if (progress) progress.style.width = '100%';
           if (progressMobile) progressMobile.style.height = '100%';
 
-          // Animate steps
           const steps = document.querySelectorAll('.pipeline-step');
           steps.forEach((step, i) => {
             setTimeout(() => {
@@ -157,15 +176,12 @@ const analogy = t(lang, 'approach.analogy');
             }, i * 200);
           });
 
-          observer.unobserve(entry.target);
+          pipelineObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.3 });
 
-    const pipelineEl = document.querySelector('[data-animate]');
-    if (pipelineEl) observer.observe(pipelineEl);
-
-    // GSAP animations for data-animate
-    import('@/scripts/animations');
+    const pipelineSection = document.getElementById('pipeline-progress')?.closest('section');
+    if (pipelineSection) pipelineObserver.observe(pipelineSection);
   </script>
 </BaseLayout>
