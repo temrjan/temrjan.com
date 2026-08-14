@@ -32,6 +32,11 @@ const paragraphs = project.longDescription[lang].split('\n\n');
 // Explicit bright glow colors for the ambient effect
 const glowColorsMap: Record<string, string> = {
   'oltinpay': 'rgba(245, 197, 24, 0.25)', // Gold
+  'hexforge': 'rgba(183, 65, 14, 0.2)', // Rust orange
+  'aqllify': 'rgba(13, 148, 136, 0.2)', // Teal
+  'dorify-v2': 'rgba(224, 35, 78, 0.2)', // Nest red
+  'devops-agent': 'rgba(245, 158, 11, 0.2)', // Amber
+  'biotact-mcp': 'rgba(139, 92, 246, 0.2)', // Violet
   'znai-cloud': 'rgba(56, 189, 248, 0.15)', // Bright Blue
   'askbiotact': 'rgba(139, 92, 246, 0.15)', // Purple
   'biotact': 'rgba(227, 30, 36, 0.2)', // Red
@@ -99,7 +104,7 @@ const ambientGlow = glowColorsMap[project.id] || 'rgba(227, 30, 36, 0.15)';
             {t(lang, 'projectPage.role')}
           </div>
           <div class="mt-2 text-sm font-semibold text-text">
-            {t(lang, 'projectPage.fullStack')}
+            {project.role?.[lang] ?? t(lang, 'projectPage.fullStack')}
           </div>
         </div>
         <div>
@@ -115,7 +120,7 @@ const ambientGlow = glowColorsMap[project.id] || 'rgba(227, 30, 36, 0.15)';
             {t(lang, 'projectPage.status')}
           </div>
           <div class="mt-2 text-sm font-semibold text-text">
-            {t(lang, 'projectPage.production')}
+            {project.status?.[lang] ?? t(lang, 'projectPage.production')}
           </div>
         </div>
       </div>

@@ -14,6 +14,8 @@ export interface Project {
   images: string[];
   span?: number;
   url?: string;
+  status?: Record<Language, string>;
+  role?: Record<Language, string>;
 }
 
 export const PROJECTS: Project[] = [
@@ -62,6 +64,238 @@ export const PROJECTS: Project[] = [
     images: ['/projects/oltinpay/1-wallet.png', '/projects/oltinpay/2-exchange.png', '/projects/oltinpay/3-orderbook.png', '/projects/oltinpay/4-staking.png'],
     span: 2,
     url: 'https://t.me/Oltin_Paybot',
+  },
+  {
+    id: 'hexforge',
+    title: 'HexForge',
+    category: {
+      en: 'rust · cryptography',
+      ru: 'rust · криптография',
+      uz: 'rust · kriptografiya',
+    },
+    descriptions: {
+      en: 'Vanity Ethereum address generator in Rust. Finds a keypair whose address matches your pattern — with real BIP-39 mnemonic, not a random hex string.',
+      ru: 'Генератор vanity-адресов Ethereum на Rust. Подбирает ключевую пару под ваш шаблон адреса — с настоящей BIP-39 мнемоникой, а не случайной hex-строкой.',
+      uz: 'Rust\'da vanity Ethereum manzil generatori. Manzilni sizning shabloningizga mos kalit juftini tanlaydi — tasodifiy hex emas, haqiqiy BIP-39 mnemonika bilan.',
+    },
+    longDescription: {
+      en: 'A vanity address is an Ethereum address that starts (or ends) with a pattern you choose — for branding or memorability. Finding one is brute force over secp256k1 keys, so the generator is CPU-bound by design.\n\nHexForge is built in Rust with correctness and key hygiene as first-class concerns: cryptographically secure randomness (CSPRNG), BIP-39 mnemonic derivation so the result is a real recoverable wallet, and explicit memory zeroization (zeroize) so private keys don\'t linger in RAM.\n\nThe tool is offline-first: no network calls, no telemetry — key material never leaves the machine. Ships as a CLI with a Linux GUI.\n\nOne of the details that matters in this domain: derivation paths and checksums follow the standards (BIP-32/39/44, EIP-55), so the generated wallet imports cleanly into any standard wallet software.',
+      ru: 'Vanity-адрес — это адрес Ethereum, который начинается (или заканчивается) выбранным вами шаблоном — для бренда или запоминаемости. Его поиск — это перебор ключей secp256k1, поэтому генератор по своей природе упирается в CPU.\n\nHexForge написан на Rust, где корректность и гигиена ключей — требования первого класса: криптографически стойкий генератор случайности (CSPRNG), деривация по BIP-39 — результат является настоящим восстанавливаемым кошельком, — и явное зануление памяти (zeroize), чтобы приватные ключи не оставались в RAM.\n\nИнструмент offline-first: ни сетевых вызовов, ни телеметрии — ключевой материал не покидает машину. Поставляется как CLI с графическим интерфейсом для Linux.\n\nДеталь, которая важна в этой области: пути деривации и контрольные суммы следуют стандартам (BIP-32/39/44, EIP-55), поэтому сгенерированный кошелёк без проблем импортируется в любой стандартный кошелёк.',
+      uz: 'Vanity manzil — siz tanlagan shablon bilan boshlanadigan (yoki tugaydigan) Ethereum manzili — brend yoki eslab qolish uchun. Uni topish secp256k1 kalitlarini qidirishdir, shuning uchun generator tabiatan CPU\'ga bog\'liq.\n\nHexForge Rust\'da yozilgan, to\'g\'rilik va kalit gigiyenasi birinchi darajali talab: kriptografik xavfsiz tasodifiy sonlar generatori (CSPRNG), BIP-39 bo\'yicha derivatsiya — natija haqiqiy tiklanadigan hamyon, — va xotirani aniq tozalash (zeroize), shunda maxfiy kalitlar RAM\'da qolmaydi.\n\nAsbob offline-first: tarmoq chaqiruvlari ham, telemetriya ham yo\'q — kalit materiali mashinadan chiqmaydi. Linux GUI bilan CLI sifatida tarqatiladi.\n\nBu sohada muhim tafsilot: derivatsiya yo\'llari va checksumlar standartlarga (BIP-32/39/44, EIP-55) amal qiladi, shuning uchun yaratilgan hamyon istalgan standart hamyonga muammosiz import qilinadi.',
+    },
+    strengths: {
+      en: [
+        'CSPRNG key generation + BIP-39 mnemonic — a real recoverable wallet, not a hex string',
+        'Memory zeroization (zeroize) — private keys don\'t linger in RAM',
+        'Offline-first: no network, no telemetry, key material never leaves the machine',
+        'Standards-compliant: BIP-32/39/44 derivation, EIP-55 checksum',
+      ],
+      ru: [
+        'CSPRNG-генерация ключей + BIP-39 мнемоника — настоящий восстанавливаемый кошелёк, а не hex-строка',
+        'Зануление памяти (zeroize) — приватные ключи не остаются в RAM',
+        'Offline-first: без сети и телеметрии, ключевой материал не покидает машину',
+        'Соответствие стандартам: деривация BIP-32/39/44, checksum EIP-55',
+      ],
+      uz: [
+        'CSPRNG kalit generatsiyasi + BIP-39 mnemonika — hex qator emas, haqiqiy tiklanadigan hamyon',
+        'Xotirani tozalash (zeroize) — maxfiy kalitlar RAM\'da qolmaydi',
+        'Offline-first: tarmoq va telemetriyasiz, kalit materiali mashinadan chiqmaydi',
+        'Standartlarga mos: BIP-32/39/44 derivatsiya, EIP-55 checksum',
+      ],
+    },
+    tech: ['Rust', 'BIP-39', 'secp256k1', 'CSPRNG', 'Zeroize'],
+    loc: '1.5K',
+    image: '/projects/hexforge.webp',
+    gradient: 'linear-gradient(135deg, #B7410E 5%, #5C2A0E 40%, #0C0C0E 95%)',
+    images: [],
+    url: 'https://github.com/temrjan/hexforge',
+    role: {
+      en: 'Rust / Systems',
+      ru: 'Rust / Системы',
+      uz: 'Rust / Tizimlar',
+    },
+  },
+  {
+    id: 'aqllify',
+    title: 'Aqllify',
+    category: {
+      en: 'ai · edtech',
+      ru: 'ai · edtech',
+      uz: 'ai · edtech',
+    },
+    descriptions: {
+      en: 'AI-powered Uzbek language tutor: 50 structured A1 lessons, GPT-checked exercises, spaced repetition and gamification. Live with a landing page, mini app and Telegram bot.',
+      ru: 'AI-репетитор узбекского языка: 50 структурированных уроков уровня A1, упражнения с проверкой GPT, интервальные повторения и геймификация. В продакшене: лендинг, мини-апп и Telegram-бот.',
+      uz: 'AI yordamida o\'zbek tili repetitori: 50 ta tuzilgan A1 dars, GPT tekshiradigan mashqlar, intervalli takrorlash va geymifikatsiya. Prodakshenda: lending, mini-app va Telegram-bot.',
+    },
+    longDescription: {
+      en: 'Aqllify is a production language-learning product: it teaches Uzbek through 50 structured A1-level lessons — vocabulary, grammar and exercises generated and checked with GPT-4o-mini.\n\nLearning science is built in, not bolted on: spaced repetition (SM-2 algorithm) schedules reviews, and gamification (streaks, XP, achievements) keeps retention up.\n\nThe product ships on three surfaces: a marketing landing (aqllify.com), a Telegram Mini App (app.aqllify.com) and a Telegram bot (@Aqllify_bot). Backend — FastAPI, frontend — React/TypeScript, bot — aiogram.\n\nThe interesting engineering part is the exercise pipeline: GPT not only generates content but evaluates free-form answers with structured feedback, which requires careful prompt design and validation so that grading stays consistent across thousands of variations.',
+      ru: 'Aqllify — продакшен-продукт для изучения языка: узбекский через 50 структурированных уроков уровня A1 — лексика, грамматика и упражнения, генерируемые и проверяемые GPT-4o-mini.\n\nНаука об обучении встроена, а не прикручена: интервальные повторения (алгоритм SM-2) планируют ревью, а геймификация (стрики, XP, достижения) держит удержание.\n\nПродукт живёт на трёх поверхностях: маркетинговый лендинг (aqllify.com), Telegram Mini App (app.aqllify.com) и Telegram-бот (@Aqllify_bot). Бэкенд — FastAPI, фронтенд — React/TypeScript, бот — aiogram.\n\nИнженерно интересная часть — конвейер упражнений: GPT не только генерирует контент, но и оценивает свободные ответы со структурированной обратной связью. Это требует аккуратного дизайна промптов и валидации, чтобы оценка оставалась консистентной на тысячах вариаций.',
+      uz: 'Aqllify — til o\'rganish uchun prodakshen mahsulot: o\'zbek tilini 50 ta tuzilgan A1 darajadagi dars orqali o\'rgatadi — lug\'at, grammatika va GPT-4o-mini tomonidan yaratiladigan va tekshiriladigan mashqlar.\n\nO\'qitish fani ichida o\'rnatilgan: intervalli takrorlash (SM-2 algoritmi) takrorlashlarni rejalashtiradi, geymifikatsiya (streaklar, XP, yutuqlar) esa motivatsiyani saqlaydi.\n\nMahsulot uch sirtada ishlaydi: marketing lendingi (aqllify.com), Telegram Mini App (app.aqllify.com) va Telegram-bot (@Aqllify_bot). Backend — FastAPI, frontend — React/TypeScript, bot — aiogram.\n\nMuhandislik jihatdan qiziq qismi — mashq konveyeri: GPT kontent yaratish bilan qolmay, erkin javoblarni tuzilgan fikr-mulohaza bilan baholaydi. Bu baholashning minglab variatsiyada izchil qolishi uchun ehtiyotkor prompt dizayni va validatsiyani talab qiladi.',
+    },
+    strengths: {
+      en: [
+        '50 structured A1 lessons with GPT-4o-mini content generation and grading',
+        'Spaced repetition (SM-2) + gamification: streaks, XP, achievements',
+        'Three live surfaces: landing, Telegram Mini App, Telegram bot',
+        'Free-form answer evaluation with structured feedback',
+      ],
+      ru: [
+        '50 структурированных уроков A1: генерация контента и проверка через GPT-4o-mini',
+        'Интервальные повторения (SM-2) + геймификация: стрики, XP, достижения',
+        'Три живые поверхности: лендинг, Telegram Mini App, Telegram-бот',
+        'Оценка свободных ответов со структурированной обратной связью',
+      ],
+      uz: [
+        '50 ta tuzilgan A1 dars: GPT-4o-mini orqali kontent yaratish va baholash',
+        'Intervalli takrorlash (SM-2) + geymifikatsiya: streaklar, XP, yutuqlar',
+        'Uchta jonli sirt: lending, Telegram Mini App, Telegram-bot',
+        'Erkin javoblarni tuzilgan fikr-mulohaza bilan baholash',
+      ],
+    },
+    tech: ['Python', 'FastAPI', 'React', 'TypeScript', 'aiogram', 'GPT-4o-mini'],
+    loc: '5K',
+    image: '/projects/aqllify.webp',
+    gradient: 'linear-gradient(135deg, #0d9488 5%, #115e59 40%, #0C0C0E 95%)',
+    images: ['/projects/aqllify/1-landing.png'],
+    url: 'https://aqllify.com',
+  },
+  {
+    id: 'dorify-v2',
+    title: 'Dorify v2',
+    category: {
+      en: 'marketplace · architecture',
+      ru: 'маркетплейс · архитектура',
+      uz: 'marketplace · arxitektura',
+    },
+    descriptions: {
+      en: 'Multi-tenant pharmacy marketplace: NestJS 11 with DDD and hexagonal architecture, per-tenant payment integration, Telegram storefront. Commercial project, pre-production.',
+      ru: 'Мультитенантный маркетплейс аптек: NestJS 11 с DDD и гексагональной архитектурой, платёжная интеграция на каждого тенанта, Telegram-витрина. Коммерческий проект, предпродакшен.',
+      uz: 'Multi-tenant dorixona marketplace\'i: DDD va geksagonal arxitekturali NestJS 11, har bir tenant uchun to\'lov integratsiyasi, Telegram-vitrina. Tijorat loyihasi, pre-production.',
+    },
+    longDescription: {
+      en: 'Dorify v2 is a commercial marketplace platform for pharmacy chains: each pharmacy (tenant) gets its own storefront, catalog, orders and payment configuration, while sharing one codebase and one deployment.\n\nThe backend is NestJS 11 built with Domain-Driven Design and hexagonal architecture: business logic lives in domain modules isolated from frameworks and infrastructure, which keeps the multi-tenant rules testable and the payment integrations swappable.\n\nData layer — Prisma 6 over PostgreSQL 17. Customer-facing surface — a Telegram bot storefront (Grammy) plus a React 19 admin/management frontend. Payments — Multicard integration configured per tenant.\n\nThe project is in pre-production: the architecture and the main flows are implemented and covered, and the codebase serves as a reference for how I structure larger TypeScript systems.',
+      ru: 'Dorify v2 — коммерческая маркетплейс-платформа для аптечных сетей: каждая аптека (тенант) получает собственную витрину, каталог, заказы и платёжную конфигурацию при общем коде и одном деплое.\n\nБэкенд — NestJS 11, построенный по Domain-Driven Design и гексагональной архитектуре: бизнес-логика живёт в доменных модулях, изолированных от фреймворков и инфраструктуры, — мультитенантные правила остаются тестируемыми, а платёжные интеграции — заменяемыми.\n\nСлой данных — Prisma 6 поверх PostgreSQL 17. Клиентская поверхность — Telegram-витрина (Grammy) плюс фронтенд управления на React 19. Платежи — интеграция Multicard с конфигурацией на каждого тенанта.\n\nПроект в предпродакшене: архитектура и основные потоки реализованы и покрыты, а кодовая база служит примером того, как я структурирую крупные TypeScript-системы.',
+      uz: 'Dorify v2 — dorixona tarmoqlari uchun tijorat marketplace platformasi: har bir dorixona (tenant) umumiy kod va bitta deploy bilan o\'z vitrina, katalog, buyurtma va to\'lov konfiguratsiyasiga ega.\n\nBackend — Domain-Driven Design va geksagonal arxitektura asosidagi NestJS 11: biznes-logika freymvork va infratuzilmadan izolyatsiya qilingan domen modullarda yashaydi — multi-tenant qoidalar testlanadigan, to\'lov integratsiyalari esa almashtiriladigan bo\'lib qoladi.\n\nMa\'lumotlar qatlami — PostgreSQL 17 ustida Prisma 6. Mijozga qaragan sirt — Telegram vitrina (Grammy) va React 19 boshqaruv frontendi. To\'lovlar — har bir tenant uchun sozlanadigan Multicard integratsiyasi.\n\nLoyiha pre-production bosqichida: arxitektura va asosiy oqimlar amalga oshirilgan va qamrab olingan, kod bazasi esa katta TypeScript tizimlarni qanday tuzishimning namunasi bo\'lib xizmat qiladi.',
+    },
+    strengths: {
+      en: [
+        'DDD + hexagonal architecture: domain logic isolated from frameworks',
+        'Multi-tenant design: storefront, catalog, orders and payments per pharmacy',
+        'Per-tenant Multicard payment integration',
+        'Prisma 6 + PostgreSQL 17, Grammy bot, React 19 frontend',
+      ],
+      ru: [
+        'DDD + гексагональная архитектура: доменная логика изолирована от фреймворков',
+        'Мультитенантный дизайн: витрина, каталог, заказы и платежи на каждую аптеку',
+        'Интеграция Multicard с конфигурацией на каждого тенанта',
+        'Prisma 6 + PostgreSQL 17, бот на Grammy, фронтенд на React 19',
+      ],
+      uz: [
+        'DDD + geksagonal arxitektura: domen logikasi freymvorklardan izolyatsiya qilingan',
+        'Multi-tenant dizayn: har bir dorixona uchun vitrina, katalog, buyurtmalar va to\'lovlar',
+        'Har bir tenant uchun Multicard to\'lov integratsiyasi',
+        'Prisma 6 + PostgreSQL 17, Grammy bot, React 19 frontend',
+      ],
+    },
+    tech: ['TypeScript', 'NestJS 11', 'DDD', 'Prisma 6', 'React 19', 'Grammy'],
+    loc: '17K',
+    image: '/projects/dorify.webp',
+    gradient: 'linear-gradient(135deg, #E0234E 5%, #7A1229 40%, #0C0C0E 95%)',
+    images: [],
+    url: 'https://github.com/temrjan/dorify-v2',
+    status: {
+      en: 'Pre-production',
+      ru: 'Предпродакшен',
+      uz: 'Pre-production',
+    },
+  },
+  {
+    id: 'devops-agent',
+    title: 'DevOps Agent',
+    category: {
+      en: 'ai agent · devops',
+      ru: 'ai-агент · devops',
+      uz: 'ai agent · devops',
+    },
+    descriptions: {
+      en: 'Telegram-based DevOps agent: Claude in an agentic loop executes SSH commands on your servers — with permission levels and dangerous-pattern filtering as a safety layer.',
+      ru: 'DevOps-агент в Telegram: Claude в агентном цикле выполняет SSH-команды на ваших серверах — с уровнями доступа и фильтром опасных паттернов как слоем безопасности.',
+      uz: 'Telegram\'dagi DevOps agenti: Claude agent tsiklida serverlaringizda SSH buyruqlarini bajaradi — xavfsizlik qatlami sifatida ruxsat darajalari va xavfli patternlar filtri bilan.',
+    },
+    longDescription: {
+      en: 'DevOps Agent lets you administer servers from a Telegram chat: you describe the task in natural language, and a Claude-driven agentic loop plans and executes SSH commands over asyncssh, streams results back and iterates until done.\n\nThe core design problem is safety: an LLM with shell access must not be able to destroy a system because of a hallucination. The agent implements permission levels and a dangerous-pattern filter that blocks destructive commands before they reach the shell.\n\nStack: Python, aiogram 3 for the Telegram surface, asyncssh for connections, SQLite for state. The agentic loop keeps conversation context so multi-step operations ("find the leak, restart the service, verify") work as a single session.',
+      ru: 'DevOps Agent позволяет администрировать серверы из Telegram-чата: вы описываете задачу на естественном языке, а агентный цикл на Claude планирует и выполняет SSH-команды через asyncssh, стримит результаты обратно и итерирует до результата.\n\nКлючевая проблема дизайна — безопасность: LLM с доступом к шеллу не должна иметь возможности разрушить систему из-за галлюцинации. Агент реализует уровни доступа и фильтр опасных паттернов, блокирующий деструктивные команды до того, как они дойдут до шелла.\n\nСтек: Python, aiogram 3 для Telegram-поверхности, asyncssh для соединений, SQLite для состояния. Агентный цикл держит контекст разговора, поэтому многошаговые операции («найди утечку, перезапусти сервис, проверь») работают как единая сессия.',
+      uz: 'DevOps Agent serverlarni Telegram chatidan boshqarish imkonini beradi: siz vazifani tabiiy tilda yozasiz, Claude\'dagi agent tsikli esa asyncssh orqali SSH buyruqlarini rejalashtirib bajaradi, natijalarni qaytaradi va natijagacha iteratsiya qiladi.\n\nAsosiy dizayn masalasi — xavfsizlik: shell\'ga kirish huquqiga ega LLM gallyutsinatsiya tufayli tizimni buza olmasligi kerak. Agent ruxsat darajalari va xavfli patternlar filtrini amalga oshiradi — destruktiv buyruqlar shell\'ga yetib borishdan oldin bloklanadi.\n\nStek: Python, Telegram sirt uchun aiogram 3, ulanishlar uchun asyncssh, holat uchun SQLite. Agent tsikli suhbat kontekstini saqlaydi, shuning uchun ko\'p bosqichli operatsiyalar («oqmani top, servisni qayta ishga tushir, tekshir») yagona sessiya sifatida ishlaydi.',
+    },
+    strengths: {
+      en: [
+        'Agentic loop: Claude plans, executes and iterates over SSH autonomously',
+        'Safety layer: permission levels + dangerous-pattern filter before the shell',
+        'Natural-language server administration from Telegram',
+        'Persistent context for multi-step operations',
+      ],
+      ru: [
+        'Агентный цикл: Claude планирует, выполняет и итерирует по SSH автономно',
+        'Слой безопасности: уровни доступа + фильтр опасных паттернов перед шеллом',
+        'Администрирование серверов на естественном языке из Telegram',
+        'Персистентный контекст для многошаговых операций',
+      ],
+      uz: [
+        'Agent tsikli: Claude SSH bo\'yicha avtonom rejalashtiradi, bajaradi va iteratsiya qiladi',
+        'Xavfsizlik qatlami: ruxsat darajalari + shell\'dan oldin xavfli patternlar filtri',
+        'Telegram\'dan tabiiy tilda server administratsiyasi',
+        'Ko\'p bosqichli operatsiyalar uchun doimiy kontekst',
+      ],
+    },
+    tech: ['Python', 'Claude', 'aiogram 3', 'asyncssh', 'SQLite'],
+    loc: '6K',
+    image: '/projects/devops-agent.webp',
+    gradient: 'linear-gradient(135deg, #F59E0B 5%, #92400E 40%, #0C0C0E 95%)',
+    images: [],
+    url: 'https://github.com/temrjan/devops-agent',
+  },
+  {
+    id: 'biotact-mcp',
+    title: 'Biotact MCP',
+    category: {
+      en: 'mcp · ai tooling',
+      ru: 'mcp · ai-инструменты',
+      uz: 'mcp · ai vositalar',
+    },
+    descriptions: {
+      en: 'MCP server that gives AI coding agents semantic access to the Biotact knowledge base: search, stats and transcripts through the production API at core.biotact.uz.',
+      ru: 'MCP-сервер, дающий AI-агентам семантический доступ к базе знаний Biotact: поиск, статистика и транскрипты через продакшен-API core.biotact.uz.',
+      uz: 'AI agentlarga Biotact bilim bazasiga semantik kirish beradigan MCP server: core.biotact.uz prodakshen API orqali qidiruv, statistika va transkriptlar.',
+    },
+    longDescription: {
+      en: 'Biotact MCP is a Model Context Protocol server that plugs the Biotact knowledge base directly into AI coding agents (Claude Code and other MCP clients) over stdio.\n\nIt exposes three focused tools: biotact_search (semantic search over the knowledge base), biotact_stats (collection statistics) and biotact_get_transcript (full transcript retrieval). The server talks to the production API at core.biotact.uz, so the agent always works with live data.\n\nThe point of MCP as an interface: the agent decides itself when it needs domain knowledge and pulls it in mid-task — no copy-pasting context into prompts. Built with Python, httpx and the Qdrant-backed search API.',
+      ru: 'Biotact MCP — сервер Model Context Protocol, подключающий базу знаний Biotact напрямую к AI-агентам (Claude Code и другим MCP-клиентам) через stdio.\n\nСервер экспонирует три сфокусированных тула: biotact_search (семантический поиск по базе знаний), biotact_stats (статистика коллекции) и biotact_get_transcript (получение полного транскрипта). Сервер работает с продакшен-API core.biotact.uz, поэтому агент всегда оперирует живыми данными.\n\nСмысл MCP как интерфейса: агент сам решает, когда ему нужны доменные знания, и подтягивает их посреди задачи — без копирования контекста в промпты. Написан на Python с httpx и поисковым API на базе Qdrant.',
+      uz: 'Biotact MCP — Biotact bilim bazasini AI agentlarga (Claude Code va boshqa MCP mijozlariga) stdio orqali to\'g\'ridan-to\'g\'ri ulaydigan Model Context Protocol serveri.\n\nServer uchta aniq tool taqdim etadi: biotact_search (bilim bazasi bo\'yicha semantik qidiruv), biotact_stats (kolleksiya statistikasi) va biotact_get_transcript (to\'liq transkript olish). Server core.biotact.uz prodakshen API bilan ishlaydi, shuning uchun agent har doim jonli ma\'lumotlar bilan ishlaydi.\n\nMCP interfeysining ma\'nosi: agent domen bilimi qachon kerakligini o\'zi hal qiladi va uni vazifa davomida tortib oladi — kontekstni promptlarga ko\'chirishsiz. Python\'da httpx va Qdrant asosidagi qidiruv API bilan yozilgan.',
+    },
+    strengths: {
+      en: [
+        'Three focused MCP tools: semantic search, stats, transcript retrieval',
+        'Talks to the live production API — no stale snapshots',
+        'stdio transport: plugs into Claude Code and any MCP client',
+      ],
+      ru: [
+        'Три сфокусированных MCP-тула: семантический поиск, статистика, транскрипты',
+        'Работа с живым продакшен-API — без устаревших снапшотов',
+        'Транспорт stdio: подключается к Claude Code и любому MCP-клиенту',
+      ],
+      uz: [
+        'Uchta aniq MCP tool: semantik qidiruv, statistika, transkriptlar',
+        'Jonli prodakshen API bilan ishlaydi — eskirgan snapshotlarsiz',
+        'stdio transporti: Claude Code va istalgan MCP mijoziga ulanadi',
+      ],
+    },
+    tech: ['Python', 'MCP', 'Claude', 'Qdrant', 'httpx'],
+    loc: '—',
+    image: '/projects/biotact-mcp.webp',
+    gradient: 'linear-gradient(135deg, #8B5CF6 5%, #5B21B6 40%, #0C0C0E 95%)',
+    images: [],
+    url: 'https://github.com/temrjan/biotact-mcp',
   },
   {
     id: 'znai-cloud',

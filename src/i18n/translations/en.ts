@@ -1,7 +1,7 @@
 export const en = {
   meta: {
     title: 'Temrjan \u2014 Full-Stack Developer',
-    description: 'AI products, Telegram apps and platforms \u2014 from zero to production. 5 products, 90K+ lines of code.',
+    description: 'AI products, fintech & blockchain, Rust systems \u2014 from zero to production. 10 products, 90K+ lines of code.',
   },
   nav: {
     projects: 'Projects',
@@ -11,7 +11,7 @@ export const en = {
   hero: {
     name: 'TEMRJAN',
     role: 'Full-Stack Developer',
-    tagline: 'AI products, Telegram ecosystem\nand complex platforms',
+    tagline: 'AI products, fintech & blockchain,\nRust systems \u2014 from zero to production',
     cta: {
       projects: 'View Projects',
       contact: 'Get in Touch',

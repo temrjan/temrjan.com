@@ -3,7 +3,7 @@ import type { TranslationSchema } from './en';
 export const uz: TranslationSchema = {
   meta: {
     title: 'Temrjan \u2014 Full-Stack Dasturchi',
-    description: 'AI mahsulotlar, Telegram ilovalar va platformalar \u2014 noldan prodakshengacha. 5 ta mahsulot, 90K+ qator kod.',
+    description: 'AI mahsulotlar, fintech va blokcheyn, Rust tizimlar \u2014 noldan prodakshengacha. 10 ta mahsulot, 90K+ qator kod.',
   },
   nav: {
     projects: 'Loyihalar',
@@ -13,7 +13,7 @@ export const uz: TranslationSchema = {
   hero: {
     name: 'TEMRJAN',
     role: 'Full-Stack Dasturchi',
-    tagline: 'AI mahsulotlar, Telegram ekotizimi\nva murakkab platformalar',
+    tagline: 'AI mahsulotlar, fintech va blokcheyn,\nRust tizimlar \u2014 noldan prodakshengacha',
     cta: {
       projects: 'Loyihalarni ko\'rish',
       contact: 'Bog\'lanish',
