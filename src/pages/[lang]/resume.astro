@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Contact from '@/components/Contact.astro';
+import { SUPPORTED_LANGS, type Language } from '@/i18n/config';
+import { getCopy } from '@/i18n/utils';
+
+export function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const copy = getCopy(lang);
+const name = lang === 'ru' ? 'Темржан Хасенов' : 'Temrjan Khasenov';
+---
+
+<BaseLayout lang={lang} section="resume">
+  <Header lang={lang} section="resume" />
+  <main id="main" class="shell page-main resume-page">
+    <header class="page-intro">
+      <p class="eyebrow">{copy.resume.eyebrow}</p>
+      <h1>{copy.resume.title}</h1>
+      <p class="page-lead">{copy.resume.lead}</p>
+      <div class="resume-identity">
+        <strong>{name}</strong>
+        <span>{copy.common.location}</span>
+        <span>{copy.common.availability}</span>
+      </div>
+      <button class="print-button" type="button" onclick="window.print()">{copy.common.print} <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <section class="section-block" aria-labelledby="experience-heading">
+      <div class="section-heading"><span class="section-number">01</span><h2 id="experience-heading">{copy.resume.experienceTitle}</h2></div>
+      <ol class="experience-list">
+        {copy.resume.experience.map((item) => (
+          <li class="experience-item">
+            <span class="experience-period">{item.period}</span>
+            <div>
+              <h3>{item.organization}</h3>
+              <p class="experience-role">{item.role}</p>
+              <p>{item.detail}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="section-block" aria-labelledby="skills-heading">
+      <div class="section-heading"><span class="section-number">02</span><h2 id="skills-heading">{copy.resume.skillsTitle}</h2></div>
+      <div class="skill-grid">
+        {copy.resume.skills.map((item) => (
+          <article class="skill-card"><h3>{item.title}</h3><p>{item.detail}</p></article>
+        ))}
+      </div>
+    </section>
+
+    <section class="personal-project" aria-labelledby="personal-heading">
+      <div><span class="section-number">03</span><h2 id="personal-heading">{copy.resume.personalTitle}</h2></div>
+      <p>{copy.resume.personalText}</p>
+      <a class="text-link" href="https://github.com/temrjan/rustok" target="_blank" rel="noopener noreferrer">{copy.common.source} <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <Contact lang={lang} title={copy.resume.contactTitle} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

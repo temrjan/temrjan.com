@@ -1,76 +1,28 @@
 ---
-import Icons from './Icons.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import type { Language } from '@/i18n/config';
-import { t } from '@/i18n/utils';
+import { sectionPath, type Language, type Section } from '@/i18n/config';
+import { getCopy } from '@/i18n/utils';
 
 interface Props {
   lang: Language;
-  isHomePage?: boolean;
+  section: Section;
 }
 
-const { lang, isHomePage = true } = Astro.props;
-
-const projectsUrl = isHomePage ? '#projects' : `/${lang}/#projects`;
-const contactUrl = isHomePage ? '#contact' : `/${lang}/#contact`;
+const { lang, section } = Astro.props;
+const copy = getCopy(lang);
+const sections: Section[] = ['home', 'resume', 'services'];
 ---
 
-<div
-  id="mobile-menu"
-  class="fixed inset-0 z-[60] flex translate-x-full flex-col bg-body transition-transform duration-300 md:hidden"
-  aria-hidden="true"
->
-  <div class="flex items-center justify-between px-6 py-4">
-    <a href={`/${lang}/`} class="group flex items-center transition-transform hover:scale-[1.02]" aria-label="Home">
-      <svg class="h-6 md:h-7 text-text transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(227,30,36,0.2)]" viewBox="0 0 160 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <g style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.04em;">
-          <text x="0" y="24">temrjan</text>
-          <circle cx="112" cy="24" r="4" class="fill-primary" />
-        </g>
-      </svg>
-    </a>
-    <button id="mobile-menu-close" aria-label="Close menu">
-      <Icons name="close" size={24} class="text-text" />
-    </button>
+<details class="mobile-menu">
+  <summary>{copy.nav.menu}<span aria-hidden="true">☰</span></summary>
+  <div class="mobile-menu-panel">
+    <nav aria-label={copy.nav.menu}>
+      {sections.map((item) => (
+        <a href={sectionPath(lang, item)} aria-current={item === section ? 'page' : undefined}>
+          {copy.nav[item]}
+        </a>
+      ))}
+    </nav>
+    <LanguageSwitcher lang={lang} section={section} />
   </div>
-
-  <nav class="flex flex-1 flex-col items-center justify-center gap-8">
-    <a href={projectsUrl} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
-      {t(lang, 'nav.projects')}
-    </a>
-    <a href={`/${lang}/approach`} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
-      {t(lang, 'nav.approach')}
-    </a>
-    <a href={contactUrl} class="mobile-menu-link font-heading text-3xl font-semibold text-text transition-colors hover:text-primary">
-      {t(lang, 'nav.contact')}
-    </a>
-    <div class="mt-4">
-      <LanguageSwitcher lang={lang} />
-    </div>
-  </nav>
-</div>
-
-<script>
-  const menu = document.getElementById('mobile-menu');
-  const toggle = document.getElementById('mobile-menu-toggle');
-  const close = document.getElementById('mobile-menu-close');
-  const links = document.querySelectorAll('.mobile-menu-link');
-
-  function openMenu(): void {
-    menu?.classList.remove('translate-x-full');
-    menu?.setAttribute('aria-hidden', 'false');
-    toggle?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu(): void {
-    menu?.classList.add('translate-x-full');
-    menu?.setAttribute('aria-hidden', 'true');
-    toggle?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  toggle?.addEventListener('click', openMenu);
-  close?.addEventListener('click', closeMenu);
-  links.forEach((link) => link.addEventListener('click', closeMenu));
-</script>
+</details>

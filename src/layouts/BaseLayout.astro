@@ -1,15 +1,22 @@
 ---
 import '@/styles/global.css';
+import { SUPPORTED_LANGS, sectionPath, type Language, type Section } from '@/i18n/config';
+import { getCopy } from '@/i18n/utils';
 
 interface Props {
-  title: string;
-  description: string;
-  lang: string;
+  lang: Language;
+  section: Section;
+  isRoot?: boolean;
 }
 
-const { title, description, lang } = Astro.props;
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const SUPPORTED_LANGS = ['en', 'uz', 'ru'];
+const { lang, section, isRoot = false } = Astro.props;
+const copy = getCopy(lang);
+const { title, description } = copy.meta[section];
+const base = Astro.site ?? new URL('https://temrjan.com');
+const absolute = (path: string) => new URL(path, base).href;
+const canonical = absolute(sectionPath(lang, section));
+const defaultPath = section === 'home' ? '/' : sectionPath('en', section);
+const locale = { en: 'en_US', ru: 'ru_RU', uz: 'uz_UZ' }[lang];
 ---
 
 <!doctype html>
@@ -18,59 +25,32 @@ const SUPPORTED_LANGS = ['en', 'uz', 'ru'];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-
     <title>{title}</title>
     <meta name="description" content={description} />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- Canonical & Hreflang -->
-    <link rel="canonical" href={canonicalUrl.href} />
-    {SUPPORTED_LANGS.map((l) => (
-      <link rel="alternate" hreflang={l} href={`${Astro.site}${l}/`} />
+    <link rel="canonical" href={canonical} />
+    {SUPPORTED_LANGS.map((language) => (
+      <link rel="alternate" hreflang={language} href={absolute(sectionPath(language, section))} />
     ))}
-    <link rel="alternate" hreflang="x-default" href={`${Astro.site}en/`} />
-
-    <!-- Open Graph -->
+    <link rel="alternate" hreflang="x-default" href={absolute(defaultPath)} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl.href} />
-    <meta property="og:image" content={`${Astro.site}og-image.jpg`} />
-    <meta property="og:locale" content={lang} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${Astro.site}og-image.jpg`} />
-
-    <!-- Google Fonts: Space Grotesk -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
-
-    <!-- Structured Data -->
+    <meta property="og:url" content={isRoot ? absolute('/') : canonical} />
+    <meta property="og:locale" content={locale} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#f7f8f5" />
     <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Temrjan",
-      "url": "https://temrjan.com",
-      "jobTitle": "Full-Stack Developer",
-      "sameAs": [
-        "https://github.com/temrjan",
-        "https://t.me/temrjan"
-      ]
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: lang === 'ru' ? 'Темржан Хасенов' : 'Temrjan Khasenov',
+      url: 'https://temrjan.com/',
+      jobTitle: 'Fullstack AI Developer',
+      sameAs: ['https://github.com/temrjan', 'https://t.me/temrjan'],
     })} />
   </head>
   <body>
-    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
-      Skip to content
-    </a>
+    <a class="skip-link" href="#main">{copy.common.skip}</a>
     <slot />
   </body>
 </html>
