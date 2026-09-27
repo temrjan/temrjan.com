@@ -1,125 +1,134 @@
-import type { TranslationSchema } from './en';
+import type { SiteCopy } from './en';
 
-export const uz: TranslationSchema = {
+export const uz: SiteCopy = {
   meta: {
-    title: 'Temrjan \u2014 Full-Stack Dasturchi',
-    description: 'AI mahsulotlar, fintech va blokcheyn, Rust tizimlar \u2014 noldan prodakshengacha. 10 ta mahsulot, 90K+ qator kod.',
-  },
-  nav: {
-    projects: 'Loyihalar',
-    approach: 'Yondashuv',
-    contact: 'Aloqa',
-  },
-  hero: {
-    name: 'TEMRJAN',
-    role: 'Full-Stack Dasturchi',
-    tagline: 'AI mahsulotlar, fintech va blokcheyn,\nRust tizimlar \u2014 noldan prodakshengacha',
-    cta: {
-      projects: 'Loyihalarni ko\'rish',
-      contact: 'Bog\'lanish',
+    home: {
+      title: 'Temrjan Khasenov — raqamli mahsulotlar va AI',
+      description: 'Temrjan Khasenov inson nazorati ostida raqamli mahsulotlar, integratsiyalar va AI vositalarini yaratadi. Toshkent; loyiha asosida va masofadan ishlaydi.',
     },
-    stats: {
-      products: 'Mahsulotlar',
-      loc: 'Qator kod',
-      stacks: 'Steklar',
+    resume: {
+      title: 'Rezyume — Temrjan Khasenov',
+      description: 'Kinopro, Multicard Payment, shaxsiy SaaS loyihalari va Biotact Deutschland kompaniyasidagi hozirgi AI ishlari bo‘yicha tajriba.',
+    },
+    services: {
+      title: 'Xizmatlar va ish namunalari — Temrjan Khasenov',
+      description: 'API, Telegram mahsulotlari, bilimlar bo‘yicha qidiruv, avtomatlashtirish va huquqlari cheklangan AI agentlari. Biotact, Rustok va OltinPay namunalari.',
     },
   },
-  projects: {
-    title: 'Loyihalar',
-    subtitle: 'Noldan yaratgan mahsulotlarim',
-    loc: 'QK',
-    details: 'Batafsil',
+  nav: { home: 'Bosh sahifa', resume: 'Rezyume', services: 'Xizmatlar', menu: 'Menyu', language: 'Til' },
+  common: {
+    skip: 'Asosiy mazmunga o‘tish',
+    location: 'Toshkent, O‘zbekiston',
+    availability: 'Loyiha asosida va masofadan',
+    contact: 'Bog‘lanish',
+    telegram: 'Telegram',
+    email: 'Elektron pochta',
+    github: 'GitHub',
+    print: 'Rezyumeni chop etish',
+    fullCatalog: 'Barcha imkoniyatlar katalogi',
+    source: 'Manbani ko‘rish',
   },
-  contact: {
-    title: 'Keling, birgalikda yaratamiz',
-    subtitle: 'G\'oyangiz bormi? Men uni mahsulotga aylantiraman.',
-    telegram: 'Telegramda yozish',
-    email: 'Email yuborish',
+  home: {
+    eyebrow: 'Mahsulot · Dasturlash · AI',
+    intro: 'Raqamli mahsulotlar, integratsiyalar va AI vositalarini loyihalayman hamda yarataman. Texnik qarorlarni qabul qilaman, ishni tekshiraman va natija uchun javob beraman.',
+    resumeLink: 'Rezyumeni ko‘rish',
+    servicesLink: 'Xizmatlarni ko‘rish',
+    currentLabel: 'Hozirgi ish',
+    currentText: '2025-yildan beri Biotact Deutschland kompaniyasida Fullstack AI Developer.',
+    focusLabel: 'Ish uslubim',
+    focusText: 'Aniq vazifa, birinchi ishlaydigan natija, tekshiruv va tartibli topshirish.',
+    selectedTitle: 'Ish namunalari va ularning holati',
+    selectedText: 'Xizmatlar sahifasida uchta qisqa misol, ularning joriy holati va tekshirish uchun havolalar bor.',
   },
-  footer: {
-    copyright: '\u00a9 2026 Temrjan',
-    built: 'Astro bilan yaratilgan',
-  },
-  projectPage: {
-    back: 'Barcha loyihalar',
-    strengths: 'Asosiy yechimlar',
-    gallery: 'Galereya',
-    stack: 'Texnologiya steki',
-    live: 'Live',
-    role: 'Rol',
-    period: 'Davr',
-    status: 'Holat',
-    fullStack: 'Full-Stack',
-    production: 'Production',
-    periodValue: '2025\u20132026',
-  },
-  approach: {
-    meta: {
-      title: 'Yondashuv — Temrjan',
-      description: 'AI-driven development: qat\'iy sifat tizimi bilan mahsulotlar yaratish.',
-    },
-    label: 'Qanday ishlayman',
-    title: 'AI-Driven Development',
-    subtitle: 'Men arxitekturani loyihalayman va AI bilan qat\'iy standartlar tizimi bo\'yicha ishlayman. ChatGPT\'dan ko\'chirib olish emas — avtomatik sifat nazorati bilan muhandislik jarayoni.',
-    pipeline: {
-      title: 'Pipeline',
-      steps: [
-        { icon: '💻', name: 'Kod', desc: 'Codex standartlari stek bo\'yicha avtomatik yuklanadi' },
-        { icon: '🔍', name: 'Tekshiruv', desc: 'Har bir o\'zgarishda self-review + code review' },
-        { icon: '🚀', name: 'Push', desc: 'Conventional commits, feature branches' },
-        { icon: '⚙️', name: 'CI', desc: 'Lint + typecheck + tests — yashil bo\'lishi shart' },
-        { icon: '🌐', name: 'Deploy', desc: 'Productionga avtodeploy' },
-      ],
-    },
-    codex: {
-      title: 'Codex',
-      subtitle: 'Men ham, AI ham rioya qiladigan kod sifati qoidalari tizimi. Har bir loyiha, har bir commit.',
-      rules: {
-        read: {
-          name: 'READ before WRITE',
-          desc: 'O\'zgartirmoqchi bo\'lgan faylni + loyihadagi 2-3 o\'xshash faylni o\'qi. Yozishdan oldin patternlarni tushun.',
-        },
-        verify: {
-          name: 'VERIFY, don\'t guess',
-          desc: 'Har bir API chaqiruvi uchun hujjatlarni tekshir. Hech qachon signaturalarni taxmin qilma.',
-        },
-        one: {
-          name: 'ONE thing at a time',
-          desc: 'Bir vazifani to\'liq tugatib, keyin keyingisiga o\'t. Minimal difflar, aniq o\'zgarishlar.',
-        },
-        check: {
-          name: 'CHECK after writing',
-          desc: 'O\'z diffingni qayta o\'qi. Importlar mavjudligini, tiplar mos kelishini tekshir.',
-        },
+  resume: {
+    eyebrow: 'Kasbiy yo‘l',
+    title: 'Yillar bo‘yicha tajriba.',
+    lead: 'Mahsulotga oid qarorlar va amaliy dasturlashni birlashtiraman. Tajribamga shaxsiy biznes, to‘lov mahsulotlari, SaaS loyihalari va hozirgi AI ishlari kiradi.',
+    experienceTitle: 'Ish tajribasi',
+    experience: [
+      {
+        period: '2025–hozir',
+        organization: 'Biotact Deutschland',
+        role: 'Fullstack AI Developer',
+        detail: 'Bilimlarga kirish va ish jarayonlari uchun AI vositalarini loyihalayman va ishlab chiqaman.',
       },
-    },
-    analogy: {
-      title: 'Analogiya',
-      current: 'Biz shu yerdamiz',
-      stages: [
-        {
-          era: 'Qog\'oz davri',
-          icon: '📝',
-          title: 'Qo\'lda hisoblash',
-          dev: 'Dasturlashda: har bir qatorni qo\'lda yozish, xatolarni ko\'z bilan qidirish.',
-          desc: 'Sekin, xatolarga moyil, lekin to\'liq nazorat.',
-        },
-        {
-          era: 'Kalkulyator davri',
-          icon: '🔢',
-          title: 'Kalkulyator',
-          dev: 'Dasturlashda: ChatGPT / Copilot — tez javoblar, lekin tekshiruvsiz. Gallyutsinatsiyalar productionga ketadi.',
-          desc: 'Tezroq, lekin ko\'r-ko\'rona ishonasan. Formulada xato bo\'lsa — buzilganda bilasan.',
-        },
-        {
-          era: 'Tizimlar davri',
-          icon: '🏗️',
-          title: '1C Buxgalteriya → AI-Driven Dev',
-          dev: 'Dasturlashda: standartlar, avtomatik tekshiruvlar, CI/CD. Men qaror qabul qilaman, tizim sifatni nazorat qiladi.',
-          desc: '1C buxgalterni almashtirgani yo\'q — uni 10× samaraliroq qildi. Bu yerda ham xuddi shunday.',
-        },
-      ],
-    },
-    cta: 'Amalda ko\'rmoqchimisiz? Gaplashaylik.',
+      {
+        period: '2024–2025',
+        organization: 'Shaxsiy SaaS va AI loyihalari',
+        role: 'Arxitektor va dasturchi',
+        detail: 'Mahsulot arxitekturasi, API va foydalanuvchi jarayonlarini loyihaladim hamda yaratdim.',
+      },
+      {
+        period: '2024-yil may',
+        organization: 'Multicard Payment',
+        role: 'Mahsulot menejeri',
+        detail: 'To‘lov mahsulotlarini rejalash va rivojlantirish ustida ishladim.',
+      },
+      {
+        period: '2013–2019',
+        organization: 'CLEVER IT MEDIA / Kinopro.uz',
+        role: 'Asoschi va direktor',
+        detail: 'Kinopro.uz loyihasiga asos soldim va uni boshqardim; keyinchalik loyihani sotdim.',
+      },
+    ],
+    skillsTitle: 'Ish yo‘nalishlarim',
+    skills: [
+      { title: 'Mahsulot va yetkazish', detail: 'Vazifani belgilash, arxitektura, kodni ko‘rib chiqish, sifat nazorati va topshirish.' },
+      { title: 'Dasturlash', detail: 'Rust, TypeScript, Python, API va integratsiyalar.' },
+      { title: 'AI tizimlari', detail: 'Bilimlar bo‘yicha qidiruv, avtomatlashtirish va aniq huquqlarga ega agentlar.' },
+    ],
+    personalTitle: 'Shaxsiy loyiha — Rustok',
+    personalText: 'Rustok — ochiq kodli hamyon va AI agentlari uchun kirish huquqlari loyihasi. Uni Biotactdagi hozirgi ishim bilan birga rivojlantiraman. Bu boshqa ish joyi emas, shaxsiy loyiham.',
+    contactTitle: 'Aloqa',
   },
-} as const;
+  services: {
+    eyebrow: 'Hamkorlik yo‘nalishlari',
+    title: 'Foydali dastur, puxta ish.',
+    lead: 'Aniq ehtiyojni ishlaydigan mahsulotga yoki chegarasi belgilangan birinchi bosqichga aylantirishga yordam beraman. AI ishlab chiqishni tezlashtirishi mumkin; qaror, tekshiruv va javobgarlik insonda qoladi.',
+    directionsTitle: 'Nimalarni yarata olaman',
+    directions: [
+      { title: 'API va integratsiyalar', detail: 'Mahsulotlar, ma’lumotlar va tashqi xizmatlarni aniq interfeyslar orqali bog‘lash.' },
+      { title: 'Telegram botlari va Mini Apps', detail: 'Telegram ichida mijozlar, so‘rovlar va ichki ishlar uchun jarayonlar yaratish.' },
+      { title: 'Bilimlar bo‘yicha qidiruv', detail: 'Kelishilgan hujjatlar va mahsulot ma’lumotlarini topish hamda ishlatishni osonlashtirish.' },
+      { title: 'Ish jarayonlarini avtomatlashtirish', detail: 'Takroriy qo‘l mehnatini kamaytirib, natijani tekshirish imkonini saqlash.' },
+      { title: 'Chegaralangan AI agentlari', detail: 'Agentga aniq vosita va huquqlar berish; kerak joyda inson tasdig‘ini talab qilish.' },
+    ],
+    casesTitle: 'Uchta tanlangan ish',
+    casesIntro: 'Har bir misolda ehtiyoj, mening hissam va joriy holat alohida ko‘rsatilgan.',
+    caseChallenge: 'Ehtiyoj',
+    caseContribution: 'Mening hissam',
+    caseStatus: 'Holat',
+    cases: [
+      {
+        title: 'Biotact',
+        challenge: 'Mahsulot bilimlari va kelayotgan so‘rovlardan turli kanallarda foydalanish.',
+        contribution: 'Bilimlar qidiruvi, AI maslahatchisi va Telegram hamda bog‘liq interfeyslar uchun so‘rovlarni tartibli qayta ishlashni yaratdim.',
+        status: 'Ishlayotgan mahsulot',
+      },
+      {
+        title: 'Rustok',
+        challenge: 'AI yordamchisiga hamyon bilan ishlash uchun nazorat qilinadigan ruxsat berish; kalitlar foydalanuvchida qoladi.',
+        contribution: 'Rust tilida hamyon yadrosi va tranzaksiya tekshiruvini o‘qish, oldindan ko‘rish va bajarish huquqlarini ajratib yaratdim.',
+        status: 'Ochiq kodli shaxsiy loyiha',
+      },
+      {
+        title: 'OltinPay',
+        challenge: 'Tokenlashtirilgan majburiyatlar va ularning ta’minot chegaralarini aniq hamda tekshiriladigan qilish.',
+        contribution: 'Test tarmog‘i uchun smart-kontraktlar mantiqi va mahsulot interfeyslarini ishlab chiqdim.',
+        status: 'Testnet; mustaqil tashqi audit hali yo‘q',
+      },
+    ],
+    processTitle: 'Tushunarli ish tartibi',
+    steps: [
+      { title: 'Vazifani aniqlaymiz', detail: 'Foydalanuvchilar, tizimlar, cheklovlar va kerakli natijani muhokama qilamiz.' },
+      { title: 'Birinchi bosqichni kelishamiz', detail: 'Ish boshlanishidan oldin hajm va qabul mezonlarini belgilaymiz.' },
+      { title: 'Yaratamiz va ko‘rsatamiz', detail: 'Ishlaydigan qismlarni tayyorlayman, tekshiraman va namoyish qilaman.' },
+      { title: 'Tekshirib topshiramiz', detail: 'Asosiy jarayonlarni tekshirib, hujjatlar va keyingi qadamlarni kelishamiz.' },
+    ],
+    evidenceTitle: 'Tekshirish mumkin bo‘lgan ishlar',
+    evidenceText: 'Boshqa ochiq kodli loyihalarga qabul qilingan o‘zgartirishlarimdan namunalar:',
+    ctaTitle: 'Loyihangiz bormi?',
+    ctaText: 'Nimani o‘zgartirmoqchi ekaningizni va hozir nimalar borligini ayting. Birgalikda foydali birinchi qadamni aniqlaymiz.',
+  },
+  footer: { line: 'Temrjan Khasenov · Toshkent' },
+};

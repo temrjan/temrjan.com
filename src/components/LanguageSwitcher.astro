@@ -1,27 +1,23 @@
 ---
-import type { Language } from '@/i18n/config';
-import { SUPPORTED_LANGS, LANGUAGE_LABELS } from '@/i18n/config';
+import { LANGUAGE_LABELS, SUPPORTED_LANGS, sectionPath, type Language, type Section } from '@/i18n/config';
+import { getCopy } from '@/i18n/utils';
 
 interface Props {
   lang: Language;
+  section: Section;
 }
 
-const { lang } = Astro.props;
+const { lang, section } = Astro.props;
+const copy = getCopy(lang);
 ---
 
-<div class="flex items-center gap-1 rounded-lg border border-border bg-surface px-1 py-1">
-  {SUPPORTED_LANGS.map((l) => (
+<nav class="language-switch" aria-label={copy.nav.language}>
+  {SUPPORTED_LANGS.map((language) => (
     <a
-      href={`/${l}/`}
-      class:list={[
-        'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
-        l === lang
-          ? 'bg-primary text-white'
-          : 'text-text-muted hover:text-text',
-      ]}
-      aria-current={l === lang ? 'page' : undefined}
-    >
-      {LANGUAGE_LABELS[l]}
-    </a>
+      href={sectionPath(language, section)}
+      lang={language}
+      hreflang={language}
+      aria-current={language === lang ? 'page' : undefined}
+    >{LANGUAGE_LABELS[language]}</a>
   ))}
-</div>
+</nav>
